@@ -1,0 +1,6 @@
+{
+  "eslint.workingDirectories": ["client", "server"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.singleQuote": true,
+  "editor.formatOnSave": true,
+}
