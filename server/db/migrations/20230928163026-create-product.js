@@ -17,7 +17,19 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      description: {
+      brand: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      category: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      sex: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      size: {
         type: Sequelize.TEXT,
         allowNull: false,
       },

@@ -9,7 +9,8 @@
     "db-create": "npx sequelize-cli db:create",
     "db-drop": "npx sequelize-cli db:drop",
     "db-seed": "npx sequelize-cli db:seed:all",
-    "db-migrate": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate"
+    "db-migrate": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
+    "dbr": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all"
   },
   "author": "",
   "license": "ISC",

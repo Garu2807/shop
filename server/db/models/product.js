@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Order }) {
       this.belongsToMany(Order, {
         through: 'OrderProducts',
-        foreignKey: 'order_id',
+        foreignKey: 'product_id',
+        as: 'Orders',
       });
     }
   }
@@ -24,11 +25,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      description: {
+      brand: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-
+      category: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      sex: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      size: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
       price: {
         type: DataTypes.INTEGER,
         allowNull: false,
