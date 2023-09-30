@@ -2,7 +2,7 @@ const express = require('express');
 const serverConfig = require('./config/serverConfig');
 
 const app = express();
-const PORT = 5000;
+const PORT = 6000;
 
 // config
 serverConfig(app);
