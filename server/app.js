@@ -1,5 +1,6 @@
 const express = require('express');
 const serverConfig = require('./config/serverConfig');
+const router = require('./routes/index.routes');
 
 const app = express();
 const PORT = 6000;
@@ -8,7 +9,9 @@ const PORT = 6000;
 serverConfig(app);
 
 // routing
+const indexRouter = require('./routes/index.routes');
 
+app.use('/', indexRouter);
 try {
   app.listen(PORT, () => {
     console.log(`*** Server started at ${PORT} port ***`);
