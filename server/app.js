@@ -3,7 +3,7 @@ const serverConfig = require('./config/serverConfig');
 const router = require('./routes/index.routes');
 
 const app = express();
-const PORT = 6000;
+const PORT = 4000;
 
 // config
 serverConfig(app);
