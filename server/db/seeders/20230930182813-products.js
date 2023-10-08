@@ -19,7 +19,7 @@ module.exports = {
         name: 'Куртка бомбер MA-1',
         brand: 'Alpha Industries',
         category: 'Outerwear',
-        img: 'https://chiefandsheriff.ru/media/130/130374.jpg',
+        img: 'https://static.insales-cdn.com/images/products/1/8029/222175069/IMG_1460.jpg',
         size: 'S',
         price: 15000,
         sex: 'M',

@@ -1,9 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ProductList from '../features/products/ProductList';
 
 function App(): JSX.Element {
-  return <div className="App">Hello</div>;
+  return <ProductList />;
 }
 
 export default App;
