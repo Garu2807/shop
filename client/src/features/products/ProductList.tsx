@@ -4,7 +4,7 @@ import { RootState, useAppDispatch } from '../../store';
 import ProductItem from './ProductItem';
 import { loadProducts } from './ProductSlice';
 import React from 'react';
-
+import './style.css';
 function ProductList(): JSX.Element {
   const { products } = useSelector((store: RootState) => store.products);
   const dispatch = useAppDispatch();
@@ -12,7 +12,7 @@ function ProductList(): JSX.Element {
     dispatch(loadProducts());
   }, []);
   return (
-    <div>
+    <div className="product_list">
       {products &&
         products.map((product) => (
           <ProductItem product={product} key={product.id} />
