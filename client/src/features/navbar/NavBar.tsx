@@ -4,7 +4,7 @@ import './style.css';
 import React from 'react';
 // import { MouseEventHandler } from 'react';
 // import logo from './logo.svg';
-
+//route
 function NavBar(): JSX.Element {
   return (
     <header>
