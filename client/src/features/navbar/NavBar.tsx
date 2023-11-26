@@ -10,7 +10,16 @@ function NavBar(): JSX.Element {
     <header>
       <div className="navbar">
         <div className="links">
-          <Link to="/">Logo</Link>
+          <Link to="/">
+            <img
+              src="https://uploads-ssl.webflow.com/610ed44d42af524518f29b2a/61472bd3b48ecccd04f479f2_farfetch%20logo-p-1080.png"
+              alt=""
+              width={201}
+            />
+          </Link>
+          <Link to="/auth">Войти</Link>
+          <Link to="/cart">Корзина</Link>
+          
         </div>
       </div>
     </header>

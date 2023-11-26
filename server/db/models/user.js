@@ -21,10 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      role:{
-        type: DataTypes.TEXT,
-        allowNull: false,
-      }
     },
     {
       sequelize,
