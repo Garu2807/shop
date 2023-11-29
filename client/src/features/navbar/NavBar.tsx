@@ -17,7 +17,7 @@ function NavBar(): JSX.Element {
               width={201}
             />
           </Link>
-          <Link to="/auth">Войти</Link>
+          <Link to="/authorization">Войти</Link>
           <Link to="/cart">Корзина</Link>
           
         </div>
