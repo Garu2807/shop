@@ -6,21 +6,25 @@ const { User } = require('../../db/models');
 
 router.post('/registration', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, cpassword } = req.body;
     let user = await User.findOne({ where: { email } });
-    if (!name || !email || !password || !role) {
-      res.status(400).json({ message: 'ERROR' });
+    if (!name || !email || !password || !cpassword) {
+      res.status(400).json({ message: 'Заполните все поля' });
       return;
     }
     if (user) {
-      res.status(400).json({ message: 'ERROR' });
+      res.status(400).json({ message: 'Такой емайл уже занят' });
+      return;
+    }
 
+    if (password !== cpassword) {
+      res.status(400).json({ message: 'Пароли не совпадают' });
       return;
     }
     const hash = await bcrypt.hash(password, 10);
-    user = await User.create({ name, email, password: hash, role });
+    user = await User.create({ name, email, password: hash });
     req.session.userId = user.id;
-    res.status(200).json({ message: 'REG SUCCESS' });
+    res.status(200).json(user);
   } catch ({ message }) {
     res.status(500).json({ message });
   }
@@ -32,19 +36,17 @@ router.post('/authorization', async (req, res) => {
     const user = await User.findOne({ where: { email } });
     const compare = await bcrypt.compare(password, user.password);
     if (!email || !password) {
-      res.status(400).json({ message: 'Заполните все поля' });
+      res.json({ message: 'Заполните все поля' });
       return;
     }
     if (!user || !compare) {
-      res
-        .status(400)
-        .json({ message: 'Такого юзера не существует или пароль неверный' });
+      res.json({ message: 'Такого юзера не существует или пароль неверный' });
       return;
     }
     req.session.userId = user.id;
-    res.status(200).json(user);
+    res.json(user);
   } catch ({ message }) {
-    res.status(500).json({ message });
+    res.json({ message });
   }
 });
 
@@ -59,6 +61,7 @@ router.get('/logout', (req, res) => {
       .redirect('/');
   });
 });
+
 router.get('/check', async (req, res) => {
   try {
     if (req.session.userId) {
@@ -70,4 +73,5 @@ router.get('/check', async (req, res) => {
     res.json({ message });
   }
 });
+
 module.exports = router;

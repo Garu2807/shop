@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
 // import { useAppDispatch, useAppSelector } from '../store';
 import './style.css';
 import React from 'react';
+import Registration from '../auth/Registration';
+import { Route, Routes, Link } from 'react-router-dom';
 // import { MouseEventHandler } from 'react';
 // import logo from './logo.svg';
 //route
@@ -17,9 +18,10 @@ function NavBar(): JSX.Element {
               width={201}
             />
           </Link>
-          <Link to="/authorization">Войти</Link>
+          <Link to="/autorization" className="link">
+            Войти
+          </Link>
           <Link to="/cart">Корзина</Link>
-          
         </div>
       </div>
     </header>

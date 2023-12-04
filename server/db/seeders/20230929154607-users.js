@@ -9,13 +9,13 @@ module.exports = {
         name: 'Gagik',
         email: 'arutyunyangagik@gmail.com',
         password: await bcrypt.hash('123', 10),
-        role:'Продавец'
+        isAdmin: true,
       },
       {
         name: 'G',
         email: 'a@g.com',
         password: await bcrypt.hash('123', 10),
-        role:'Покупатель'
+        isAdmin: false,
       },
     ];
     const users = userArr.map((el) => ({
