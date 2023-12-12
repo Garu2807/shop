@@ -1,12 +1,17 @@
+const cookieParser = require('cookie-parser');
 const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
+const path = require('path');
+const session = require('express-session');
+const getUser = require('../middleware/getUser');
+const sessionConfig = require('./sessionConfig');
 
-const serverConfig = (app) => {
+const config = (app) => {
+  app.use(cookieParser());
+  app.use(session(sessionConfig));
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  app.use(cors());
-  app.use(helmet());
+  app.use(express.static(path.join(__dirname, '../public')));
+  app.use(getUser);
 };
 
-module.exports = serverConfig;
+module.exports = config;

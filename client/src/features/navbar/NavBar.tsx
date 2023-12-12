@@ -1,15 +1,19 @@
 // import { useAppDispatch, useAppSelector } from '../store';
 import './style.css';
-import React from 'react';
+import userIMG from '../../icons/user.svg';
+import React, { useId, useState } from 'react';
 import Registration from '../auth/Registration';
 import { Route, Routes, Link } from 'react-router-dom';
-// import { MouseEventHandler } from 'react';
-// import logo from './logo.svg';
-//route
+import Modal from '../modal/Modal';
 function NavBar(): JSX.Element {
+  const [modalActive, setModalActive] = useState(false);
   return (
     <header>
       <div className="navbar">
+        <button className="open_btn" onClick={() => setModalActive(true)}>
+          <img src={userIMG} alt="Войти" />
+        </button>
+
         <div className="links">
           <Link to="/">
             <img
@@ -18,9 +22,10 @@ function NavBar(): JSX.Element {
               width={201}
             />
           </Link>
-          <Link to="/autorization" className="link">
-            Войти
-          </Link>
+          {/* <Link to="/autorization" className="link">
+            <img src={userIMG} alt="" width={20} />
+          </Link> */}
+          <Modal active={modalActive} setActive={setModalActive} />
           <Link to="/cart">Корзина</Link>
         </div>
       </div>

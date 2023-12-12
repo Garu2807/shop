@@ -23,6 +23,7 @@ export const authorizationFetch = async (value: UserAuthLog): Promise<User> => {
     },
     body: JSON.stringify(value),
   });
+
   return res.json();
 };
 

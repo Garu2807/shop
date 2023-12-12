@@ -1,21 +1,18 @@
+require('@babel/register');
+require('dotenv').config();
 const express = require('express');
-const serverConfig = require('./config/serverConfig');
-const router = require('./routes/index.routes');
+const config = require('./config/serverConfig');
 
 const app = express();
+
 const PORT = 4000;
 
-// config
-serverConfig(app);
-
-// routing
 const indexRouter = require('./routes/index.routes');
 
+config(app);
+
 app.use('/', indexRouter);
-try {
-  app.listen(PORT, () => {
-    console.log(`*** Server started at ${PORT} port ***`);
-  });
-} catch (error) {
-  console.log(error.message);
-}
+
+app.listen(PORT, () => {
+  console.log(`Этот сервер умирает на ${PORT} порту`);
+});

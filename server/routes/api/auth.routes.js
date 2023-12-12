@@ -6,9 +6,9 @@ const { User } = require('../../db/models');
 
 router.post('/registration', async (req, res) => {
   try {
-    const { name, email, password, cpassword } = req.body;
+    const { name, email, password } = req.body;
     let user = await User.findOne({ where: { email } });
-    if (!name || !email || !password || !cpassword) {
+    if (!name || !email || !password) {
       res.status(400).json({ message: 'Заполните все поля' });
       return;
     }
@@ -17,19 +17,20 @@ router.post('/registration', async (req, res) => {
       return;
     }
 
-    if (password !== cpassword) {
-      res.status(400).json({ message: 'Пароли не совпадают' });
-      return;
-    }
     const hash = await bcrypt.hash(password, 10);
     user = await User.create({ name, email, password: hash });
     req.session.userId = user.id;
+    console.log('User created:', user);
     res.status(200).json(user);
   } catch ({ message }) {
     res.status(500).json({ message });
   }
 });
 
+// if (password !== cpassword) {
+//   res.status(400).json({ message: 'Пароли не совпадают' });
+//   return;
+// }
 router.post('/authorization', async (req, res) => {
   try {
     const { email, password } = req.body;

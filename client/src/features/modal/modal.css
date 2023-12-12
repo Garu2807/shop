@@ -1,0 +1,38 @@
+/* .submodal {
+  display: flex;
+  justify-content: center;
+} */
+.modal {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: 0.4s all;
+  pointer-events: none;
+}
+
+.modal.active {
+  opacity: 1;
+  /* height: 100%;
+  width: 100%; */
+  pointer-events: all;
+}
+
+.modal_content {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: white;
+  width: 50vh;
+  transform: scale(0.5);
+  transition: 0.4s all;
+}
+
+.modal_content.active {
+  transform: scale(1);
+}

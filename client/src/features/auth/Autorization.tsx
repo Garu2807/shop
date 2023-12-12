@@ -15,14 +15,9 @@ function Autorization(): JSX.Element {
     dispatch(authorization({ email, password }));
     navigate('/');
   };
+  
   return (
     <div className="form__container">
-      <Link to="/autorization" className="link">
-        Войти
-      </Link>
-      <Link to="/registration" className="link">
-        Создать аккаунт
-      </Link>
       <form onSubmit={onHadleSubmit} className="form__add-animal">
         <label className="form__label">
           Email
@@ -40,6 +35,7 @@ function Autorization(): JSX.Element {
             type="text"
           />
         </label>
+      
         <button type="submit">Войти</button>
       </form>
     </div>

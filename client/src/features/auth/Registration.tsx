@@ -21,12 +21,6 @@ function Registration(): JSX.Element {
   }, [user, navigate]);
   return (
     <div className="form-container">
-      <Link to="/autorization" className="link">
-        Войти
-      </Link>
-      <Link to="/registration" className="link">
-        Создать аккаунт
-      </Link>
       <form onSubmit={onSubmit} className="regForm">
         <label className="form_label">
           Name
@@ -52,7 +46,7 @@ function Registration(): JSX.Element {
             type="text"
           />
         </label>
-        <button type="submit"></button>
+        <button type="submit">Создать акканут</button>
       </form>
     </div>
   );
