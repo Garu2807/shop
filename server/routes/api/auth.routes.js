@@ -27,10 +27,6 @@ router.post('/registration', async (req, res) => {
   }
 });
 
-// if (password !== cpassword) {
-//   res.status(400).json({ message: 'Пароли не совпадают' });
-//   return;
-// }
 router.post('/authorization', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -67,6 +63,7 @@ router.get('/check', async (req, res) => {
   try {
     if (req.session.userId) {
       const user = await User.findOne({ where: { id: req.session.userId } });
+      console.log(user);
       res.json(user);
     }
     res.end();

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js -e js,jsx,json --ignore ./sessions",
-    "db-migrate": "npx sequelize db:migrate"
+    "db-migrate": "npx sequelize db:migrate",
+    "dbr": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",

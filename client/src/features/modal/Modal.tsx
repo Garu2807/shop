@@ -1,40 +1,65 @@
-import React from 'react';
-import { useAppDispatch } from '../../store';
-import { authorization } from '../auth/authSlice';
+import React, { useState } from 'react';
 import './modal.css';
 import Autorization from '../auth/Autorization';
 import Registration from '../auth/Registration';
+import { Link, Route, Routes } from 'react-router-dom';
 
-export type ModalProps = {
+type ModalProps = {
   active: boolean;
-  setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function Modal({ active, setActive }: ModalProps): JSX.Element {
-  const dispatch = useAppDispatch();
+enum AuthMode {
+  Login,
+  Register,
+}
 
-  // const handleModalClick = (): void => {
-  //   console.log('Modal clicked');
-  //   setActive(false);
-  // };
+function Modal({ active, setModalActive }: ModalProps): JSX.Element {
+  const [authMode, setAuthMode] = useState(AuthMode.Login);
+  const toggleAuthMode = () => {
+    setAuthMode((prevMode) =>
+      prevMode === AuthMode.Login ? AuthMode.Register : AuthMode.Login
+    );
+  };
+
+  const log = (
+    <div className="authorization">
+      <Autorization setModalActive={setModalActive} />
+    </div>
+  );
+  const reg = (
+    <div className="authorization">
+      <Registration setModalActive={setModalActive} />
+    </div>
+  );
 
   return (
     <div className="submodal">
       <div
         className={active ? 'modal active' : 'modal'}
-        onClick={() => setActive(false)}
+        onClick={() => setModalActive(false)}
       >
         <div
           className={active ? 'modal_content active' : 'modal_content'}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Например, вот как можно использовать компонент Autorization: */}
-          <div className="Войти">
-            <Autorization />
-          </div>
-
-          <div className="Создать аккаунт">
-            <Registration />
+          <div className="mainReg">
+            <div className="title">Войдите или создайте аккаунт</div>
+            <div className="authButtons">
+              <button
+                onClick={() => setAuthMode(AuthMode.Login)}
+                className={authMode === AuthMode.Login ? 'active' : ''}
+              >
+                Вход
+              </button>
+              <button
+                onClick={() => setAuthMode(AuthMode.Register)}
+                className={authMode === AuthMode.Register ? 'active' : ''}
+              >
+                Регистрация
+              </button>
+            </div>
+            {authMode === AuthMode.Login ? log : reg}
           </div>
         </div>
       </div>
