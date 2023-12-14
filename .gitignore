@@ -1,4 +1,3 @@
-groups.txt
 # Logs
 logs
 *.log
@@ -130,4 +129,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-group-projects.log
+/sessions

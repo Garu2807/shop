@@ -7,10 +7,6 @@ import React from 'react';
 import './style.css';
 function ProductList(): JSX.Element {
   const { products } = useSelector((store: RootState) => store.products);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(loadProducts());
-  }, []);
   return (
     <div className="product_list">
       {products &&

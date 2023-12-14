@@ -4,8 +4,14 @@ async function getUser(req, res, next) {
   if (req.session.userId) {
     const user = await User.findOne({ where: { id: req.session.userId } });
 
-    res.locals.user = { id: user.id, name: user.name };
+    if (user) {
+      res.locals.user = { id: user.id, name: user.name };
+      console.log('User found:', res.locals.user);
+    } else {
+      console.warn('User not found for userId:', req.session.userId);
+    }
   }
+
   next();
 }
 

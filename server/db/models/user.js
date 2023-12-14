@@ -21,10 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      role:{
-        type: DataTypes.TEXT,
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-      }
+        defaultValue: false,
+      },
     },
     {
       sequelize,
