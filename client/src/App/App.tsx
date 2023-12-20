@@ -10,6 +10,7 @@ import Modal from '../features/modal/Modal';
 import { authCheckUser } from '../features/auth/authSlice';
 import { loadProducts } from '../features/products/ProductSlice';
 import { useAppDispatch } from '../store';
+import CartPage from '../features/cart/CartPage';
 // import NavBar from '../features/navbar/NavBar';
 
 function App(): JSX.Element {
@@ -23,7 +24,7 @@ function App(): JSX.Element {
       <NavBar />
       <Routes>
         <Route path="/" element={<ProductList />} />
-        {/* <Route path="/profucts/:productId" element={<ProductPage />} />  */}
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
     </div>
   );

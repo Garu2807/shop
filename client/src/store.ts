@@ -2,8 +2,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import productsReducer from './features/products/ProductSlice';
 import authReducer from './features/auth/authSlice';
+import userReducer from './features/user/userSlice';
+import { useReducer } from 'react';
 const store = configureStore({
-  reducer: { products: productsReducer, auth: authReducer },
+  reducer: { products: productsReducer, auth: authReducer, user: userReducer },
 });
 
 // для правильной типизации будем использовать useAppDispatch вместоuseDispatch
