@@ -43,10 +43,12 @@ router.get('/', async (req, res) => {
 });
 router.post('/', async (req, res) => {
   const userId = req.session.userId;
+  const products_id = req.body.id;
   try {
     // const { users_id, products_id } = req.body;
     const cart = await Cart.create({
       users_id: userId,
+      products_id: products_id,
     });
     res.json(cart);
     console.log(res);

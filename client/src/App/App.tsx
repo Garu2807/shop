@@ -20,7 +20,7 @@ function App(): JSX.Element {
     dispatch(loadProducts());
     dispatch(authCheckUser());
     dispatch(getCarts());
-  }, []);
+  }, [dispatch]);
   return (
     <div className="App">
       <NavBar />
