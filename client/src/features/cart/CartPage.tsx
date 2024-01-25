@@ -9,9 +9,8 @@ function CartPage(): JSX.Element {
   const { cart } = useSelector((store: RootState) => store.cart);
   return (
     <div>
-      {cart.map((product) => (
-        <CartItem product={product} key={product.id} />
-      ))}
+      {cart &&
+        cart.map((product) => <CartItem product={product} key={product.id} />)}
     </div>
   );
 }

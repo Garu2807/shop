@@ -4,7 +4,7 @@ export const getCarts = async (): Promise<Product[]> => {
   const response = await fetch('api/cart');
   const data = await response.json();
   console.log(data);
-  return data.products;
+  return data.Products;
 };
 
 export const addToCart = async (product: Product): Promise<Product> => {

@@ -1,6 +1,5 @@
 import { Product } from './types/Product';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../store';
+import { useAppDispatch } from '../../store';
 import './style.css';
 import { addToCart } from '../cart/cartSlice';
 export type ProductProps = {
@@ -14,9 +13,9 @@ function ProductItem({ product }: ProductProps): JSX.Element {
   };
   return (
     <div key={product.id} className="product_card">
-      <img src={product.img} />
+      <img src={product.img} alt="Товар" />
       <h4>{product.name}</h4>
-      <h4>{product.brand}</h4>
+      <h4>{product.brand}</h4> ddd
       <h4>{product.size}</h4>
       <h4>{product.price}</h4>
       <button className="addToCart" onClick={() => handleAddToCart(product)}>
