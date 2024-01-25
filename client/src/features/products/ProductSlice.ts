@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ProductsState from './types/ProductState';
 import * as api from './api';
-import { Product, ProductId } from './types/Product';
 const initialState: ProductsState = {
   products: [],
 };
-export const loadProducts = createAsyncThunk('prodcuts/loadProdcuts', () => {
+export const loadProducts = createAsyncThunk('products/loadProducts', () => {
   /* то, что возвращает thunk -> уходит в case  как action.payload */
   return api.getProducts();
 });
-const prodcutsSlice = createSlice({
-  name: 'prodcuts',
+const productsSlice = createSlice({
+  name: 'products',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -20,6 +19,8 @@ const prodcutsSlice = createSlice({
     builder.addCase(loadProducts.rejected, (state, action) => {
       console.log(action.error);
     });
+    
+
   },
 });
-export default prodcutsSlice.reducer;
+export default productsSlice.reducer;

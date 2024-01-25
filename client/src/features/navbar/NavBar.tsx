@@ -1,9 +1,7 @@
 // import { useAppDispatch, useAppSelector } from '../store';
 import './style.css';
-import userIMG from '../../icons/user.svg';
-import React, { useId, useState } from 'react';
-import Registration from '../auth/Registration';
-import { Route, Routes, Link, Outlet } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { logOut } from '../auth/authSlice';

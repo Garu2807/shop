@@ -2,8 +2,8 @@ import { Product } from './types/Product';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store';
 import './style.css';
-import { addToCart } from '../user/userSlice';
-type ProductProps = {
+import { addToCart } from '../cart/cartSlice';
+export type ProductProps = {
   product: Product;
 };
 

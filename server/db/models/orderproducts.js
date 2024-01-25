@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   OrderProducts.init(
     {
-      order_id: {
+      orders_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
-      product_id: {
+      products_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

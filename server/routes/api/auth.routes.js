@@ -20,7 +20,7 @@ router.post('/registration', async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
     user = await User.create({ name, email, password: hash });
     req.session.userId = user.id;
-    console.log('User created:', user);
+    // console.log('User created:', user);
     res.status(200).json(user);
   } catch ({ message }) {
     res.status(500).json({ message });
@@ -63,7 +63,6 @@ router.get('/check', async (req, res) => {
   try {
     if (req.session.userId) {
       const user = await User.findOne({ where: { id: req.session.userId } });
-      console.log(user);
       res.json(user);
     }
     res.end();

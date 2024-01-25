@@ -1,7 +1,6 @@
 import { Product } from '../../products/types/Product';
-import { User } from './user';
-type UserState = {
+
+export type CartState = {
   cart: Product[];
   error: string | undefined;
 };
-export default UserState;

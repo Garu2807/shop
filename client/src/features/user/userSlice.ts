@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as api from './api';
 import UserState from './types/userState';
 const initialState: UserState = {
-  user: [],
   cart: [],
   error: undefined,
 };

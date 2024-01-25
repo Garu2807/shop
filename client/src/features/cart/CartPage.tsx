@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
 import ProductItem from '../products/ProductItem';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState, useAppDispatch } from '../../store';
+import { useEffect } from 'react';
+import { getCarts } from './cartSlice';
+import CartItem from './CartItem';
 
 function CartPage(): JSX.Element {
-  const { cart } = useSelector((store: RootState) => store.user);
-
+  const { cart } = useSelector((store: RootState) => store.cart);
   return (
     <div>
       {cart.map((product) => (
-        <ProductItem product={product} key={product.id} />
+        <CartItem product={product} key={product.id} />
       ))}
     </div>
   );
