@@ -19,7 +19,6 @@ function App(): JSX.Element {
   useEffect(() => {
     dispatch(loadProducts());
     dispatch(authCheckUser());
-    dispatch(getCarts());
   }, [dispatch]);
   return (
     <div className="App">

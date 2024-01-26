@@ -6,6 +6,13 @@ import { getCarts } from './cartSlice';
 import CartItem from './CartItem';
 
 function CartPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const user = useSelector((store: RootState) => store.auth.user);
+  useEffect(() => {
+    if (user) {
+      dispatch(getCarts());
+    }
+  }, [user]);
   const { cart } = useSelector((store: RootState) => store.cart);
   return (
     <div>
