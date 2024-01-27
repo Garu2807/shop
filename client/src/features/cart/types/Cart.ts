@@ -6,3 +6,4 @@ export type Cart = {
   users_id: User['id'];
   products_id: Product['id'];
 };
+export type CartId = Cart['id'];

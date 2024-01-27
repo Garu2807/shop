@@ -10,7 +10,7 @@ import Modal from '../features/modal/Modal';
 import { authCheckUser } from '../features/auth/authSlice';
 import { loadProducts } from '../features/products/ProductSlice';
 import { useAppDispatch } from '../store';
-import CartPage from '../features/cart/CartPage';
+import CartPage from '../features/cart/CartList';
 import { getCarts } from '../features/cart/cartSlice';
 // import NavBar from '../features/navbar/NavBar';
 

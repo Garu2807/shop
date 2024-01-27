@@ -56,5 +56,15 @@ router.post('/', async (req, res) => {
     res.json({ message });
   }
 });
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  const users_id = req.session.userId; // Получение users_id из параметров запроса
 
+  console.log(id, users_id);
+
+  // Далее обрабатывайте удаление элемента из корзины с учетом users_id
+  Cart.destroy({ where: { products_id: id, users_id: users_id } })
+    .then((data) => (data ? res.json(id) : res.status(404).json(data)))
+    .catch((error) => res.status(500).json(error));
+});
 module.exports = router;
