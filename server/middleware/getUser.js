@@ -6,7 +6,6 @@ async function getUser(req, res, next) {
 
     if (user) {
       res.locals.user = { id: user.id, name: user.name };
-      // console.log('User found:', res.locals.user);
     } else {
       console.warn('User not found for userId:', req.session.userId);
     }

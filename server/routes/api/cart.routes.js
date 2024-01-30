@@ -20,13 +20,13 @@ const { User } = require('../../db/models');
 // });
 router.get('/', async (req, res) => {
   const userId = req.session.userId;
-  console.log(`твой id ${userId}`); // Предполагая, что идентификатор пользователя хранится в сессии
+  // console.log(`твой id ${userId}`); // Предполагая, что идентификатор пользователя хранится в сессии
 
   try {
     const userCart = await User.findByPk(userId, {
       include: {
         model: Product,
-        through: { model: Cart ,attributes:['quantity']}, // , attributes: ['quantity']
+        through: { model: Cart, attributes: ['quantity'] }, // , attributes: ['quantity']
         as: 'Products',
       },
     });
@@ -42,16 +42,18 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const userId = req.session.userId;
   const products_id = req.body.id;
+  // console.log(userId, products_id);
   try {
     const { quantity } = req.body;
-    const cart = await Cart.create({
-      users_id: userId,
-      products_id: products_id,
-      quantity,
+    const cart = await Cart.findOrCreate({
+      where: {
+        users_id: userId,
+        products_id: products_id,
+      },
+      quantity: quantity,
     });
     console.log(cart);
     res.json(cart);
-    console.log(res);
   } catch ({ message }) {
     res.json({ message });
   }
@@ -67,4 +69,29 @@ router.delete('/:id', (req, res) => {
     .then((data) => (data ? res.json(id) : res.status(404).json(data)))
     .catch((error) => res.status(500).json(error));
 });
+
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const usersId = req.session.userId;
+  const { quantity } = req.body;
+  try {
+    // Получаем текущую запись в корзине
+    const cartItem = await Cart.findOne({
+      where: { users_id: usersId, id: id },
+    });
+
+    if (!cartItem) {
+      return res.status(404).json({ message: 'Cart item not found' });
+    }
+
+    cartItem.quantity = quantity;
+    await cartItem.save();
+
+    res.json(cartItem);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 module.exports = router;

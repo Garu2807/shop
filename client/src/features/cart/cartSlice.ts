@@ -1,11 +1,13 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import UserState from '../user/types/userState';
 import * as api from './api';
 import { CartState } from './types/CartState';
 import { Product, ProductId } from '../products/types/Product';
+import { Cart, CartId } from './types/Cart';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState: CartState = {
   cart: [],
-  quantity:0,
+
+  quantity: 0,
   error: undefined,
 };
 
@@ -24,6 +26,11 @@ export const addToCart = createAsyncThunk(
     return api.addToCart(product);
   }
 );
+// export const updateCartQuantity = createAsyncThunk(
+//   'cart/updateCartQuantity',
+//   (cart: Cart) => api.updateCartQuantity(cart)
+// );
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -47,9 +54,15 @@ const cartSlice = createSlice({
     builder.addCase(removeFromCart.rejected, (state, action) => {
       console.log(action.error);
     });
+    // builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
+    //   state.cart = state.cart.map((c) =>
+    //     c.id !== action.payload.id ? c : action.payload
+    //   );
+    // });
+    // builder.addCase(updateCartQuantity.rejected, (state, action) => {
+    //   console.log(action.error);
+    // });
   },
 });
-
-// export const { addToCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

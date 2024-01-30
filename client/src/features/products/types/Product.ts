@@ -1,3 +1,5 @@
+import { Cart } from '../../cart/types/Cart';
+
 export type Product = {
   id: number;
   name: string;

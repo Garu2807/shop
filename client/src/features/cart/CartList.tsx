@@ -1,9 +1,12 @@
+// CartList.tsx
+
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store';
 import { getCarts } from './cartSlice';
 import CartItem from './CartItem';
 import './style.css';
+
 function CartList(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useSelector((store: RootState) => store.auth.user);
@@ -18,8 +21,13 @@ function CartList(): JSX.Element {
 
   return (
     <div className="cart_list">
-      {cart &&
-        cart.map((product) => <CartItem product={product} key={product.id} />)}
+      {cart && cart.length > 0 ? (
+        cart.map((product) => (
+          <CartItem key={product.id} product={product} />
+        ))
+      ) : (
+        <p>Корзина пуста</p>
+      )}
     </div>
   );
 }
