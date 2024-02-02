@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

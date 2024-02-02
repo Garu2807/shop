@@ -26,15 +26,13 @@ router.get('/', async (req, res) => {
     const userCart = await User.findByPk(userId, {
       include: {
         model: Product,
-        through: { model: Cart },
+        through: { model: Cart ,attributes:['quantity']}, // , attributes: ['quantity']
         as: 'Products',
       },
     });
-
     if (!userCart) {
       console.log('пусто');
     }
-
     res.json(userCart);
   } catch (error) {
     console.error(error);
@@ -45,11 +43,13 @@ router.post('/', async (req, res) => {
   const userId = req.session.userId;
   const products_id = req.body.id;
   try {
-    // const { users_id, products_id } = req.body;
+    const { quantity } = req.body;
     const cart = await Cart.create({
       users_id: userId,
       products_id: products_id,
+      quantity,
     });
+    console.log(cart);
     res.json(cart);
     console.log(res);
   } catch ({ message }) {

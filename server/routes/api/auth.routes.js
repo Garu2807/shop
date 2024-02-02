@@ -20,7 +20,6 @@ router.post('/registration', async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
     user = await User.create({ name, email, password: hash });
     req.session.userId = user.id;
-    // console.log('User created:', user);
     res.status(200).json(user);
   } catch ({ message }) {
     res.status(500).json({ message });

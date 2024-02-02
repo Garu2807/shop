@@ -1,28 +1,28 @@
 import React from 'react';
 import { useAppDispatch } from '../../store';
 import { Product } from '../products/types/Product';
+import { Cart } from './types/Cart';
 import { removeFromCart } from './cartSlice';
-import { User } from '../user/types/user';
+import './style.css';
 export type CartProps = {
   product: Product;
 };
 
 function CartItem({ product }: CartProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const handleRemoveFromCart = (product: Product): void => {
+
+  const handleRemoveFromCart = (): void => {
     dispatch(removeFromCart(product.id));
   };
+
   return (
-    <div key={product.id} className="product_card">
-      <img src={product.img} />
+    <div className="cart_item">
+      <img src={product.img} alt={product.name} />
       <h4>{product.name}</h4>
       <h4>{product.brand}</h4>
       <h4>{product.size}</h4>
       <h4>{product.price}</h4>
-      <button
-        className="removeFromCart"
-        onClick={() => handleRemoveFromCart(product)}
-      >
+      <button className="removeFromCart" onClick={handleRemoveFromCart}>
         Удалить из корзины
       </button>
     </div>

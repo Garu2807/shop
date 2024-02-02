@@ -12,7 +12,7 @@ function ProductItem({ product }: ProductProps): JSX.Element {
     dispatch(addToCart(product));
   };
   return (
-    <div key={product.id} className="product_card">
+    <div className="product_item">
       <img src={product.img} alt="Товар" />
       <h4>{product.name}</h4>
       <h4>{product.brand}</h4> ddd

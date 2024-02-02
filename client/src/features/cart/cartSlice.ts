@@ -5,6 +5,7 @@ import { CartState } from './types/CartState';
 import { Product, ProductId } from '../products/types/Product';
 const initialState: CartState = {
   cart: [],
+  quantity:0,
   error: undefined,
 };
 

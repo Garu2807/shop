@@ -4,7 +4,7 @@ import { userId } from '../user/types/user';
 export const getCarts = async (): Promise<Product[]> => {
   const response = await fetch('api/cart');
   const data = await response.json();
-  console.log(data);
+  console.log(data.Products);
   return data.Products;
 };
 
@@ -16,7 +16,6 @@ export const addToCart = async (product: Product): Promise<Product> => {
     },
     body: JSON.stringify(product),
   });
-  console.log(res);
   return res.json();
 };
 export const removeFromCart = async (id: ProductId): Promise<void> => {

@@ -28,7 +28,6 @@ export const authorizationFetch = async (value: UserAuthLog): Promise<User> => {
 
 export const authCheckUserFetch = async (): Promise<User> => {
   const res = await fetch('/api/auth/check');
-  console.log(res);
   return res.json();
 };
 
