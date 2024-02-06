@@ -9,5 +9,6 @@ export type Product = {
   sex: string;
   size: string;
   price: number;
+  quantity: number;
 };
 export type ProductId = Product['id'];

@@ -6,7 +6,8 @@ import { Cart, CartId } from './types/Cart';
 export const getCarts = async (): Promise<Product[]> => {
   const response = await fetch('api/cart');
   const data = await response.json();
-  return data.Products;
+  console.log(data);
+  return data;
 };
 
 export const addToCart = async (product: Product): Promise<Product> => {
@@ -40,27 +41,21 @@ export const removeFromCart = async (id: ProductId): Promise<void> => {
   }
 };
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const updateCartQuantity = async (
-  Id: number,
-  quantity: number
-): Promise<any> => {
+export const updateCartQuantity = async (
+  updatedCart: Product
+): Promise<Product> => {
   try {
-    const response = await fetch(`/api/cart/${Id}`, {
+    const res = await fetch(`/api/cart/${updatedCart.id}`, {
       method: 'PUT',
+      body: JSON.stringify(updatedCart),
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ quantity }),
-      credentials: 'include',
     });
 
-    if (!response.ok) {
-      const errorMessage = await response.json();
-      throw new Error(errorMessage.message);
-    }
-
-    const result = await response.json();
-    return result;
+    const data = await res.json();
+    console.log(data.cartItem);
+    return data.cartItem;
   } catch (error) {
     console.error('Error updating cart quantity:', error);
     throw error;

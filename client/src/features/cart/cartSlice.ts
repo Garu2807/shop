@@ -26,10 +26,10 @@ export const addToCart = createAsyncThunk(
     return api.addToCart(product);
   }
 );
-// export const updateCartQuantity = createAsyncThunk(
-//   'cart/updateCartQuantity',
-//   (cart: Cart) => api.updateCartQuantity(cart)
-// );
+export const updateCartQuantity = createAsyncThunk(
+  'cart/updateCartQuantity',
+  (product: Product) => api.updateCartQuantity(product)
+);
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -54,14 +54,14 @@ const cartSlice = createSlice({
     builder.addCase(removeFromCart.rejected, (state, action) => {
       console.log(action.error);
     });
-    // builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
-    //   state.cart = state.cart.map((c) =>
-    //     c.id !== action.payload.id ? c : action.payload
-    //   );
-    // });
-    // builder.addCase(updateCartQuantity.rejected, (state, action) => {
-    //   console.log(action.error);
-    // });
+    builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
+      state.cart = state.cart.map((c) =>
+        c.id !== action.payload.id ? c : action.payload
+      );
+    });
+    builder.addCase(updateCartQuantity.rejected, (state, action) => {
+      console.log(action.error);
+    });
   },
 });
 

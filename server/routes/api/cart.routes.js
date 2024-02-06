@@ -1,23 +1,8 @@
 const express = require('express');
-const { UserProducts, Product, Cart } = require('../../db/models');
+const { Product, Cart } = require('../../db/models');
 const router = express.Router();
 const { User } = require('../../db/models');
 
-// router.get('/', (req, res) => {
-//   const userId = req.session.userId;
-//   console.log(`твой id ${userId}`); // Предполагая, что идентификатор пользователя хранится в сессии
-//   Cart.findAll({
-//     where: console.log({ users_id: userId }),
-//     include: [{ model: Product }],
-//   })
-//     .then((userCart) => {
-//       res.json({ products: userCart });
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//       res.status(500).send('Internal Server Error');
-//     });
-// });
 router.get('/', async (req, res) => {
   const userId = req.session.userId;
   // console.log(`твой id ${userId}`); // Предполагая, что идентификатор пользователя хранится в сессии
@@ -33,7 +18,14 @@ router.get('/', async (req, res) => {
     if (!userCart) {
       console.log('пусто');
     }
-    res.json(userCart);
+    // Преобразование структуры объекта userCart
+    const transformedCart = userCart.Products.map(product => ({
+      ...product.toJSON(),
+      quantity: product.Cart.quantity
+    }));
+
+    console.log(transformedCart);
+    res.json(transformedCart);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -61,7 +53,6 @@ router.post('/', async (req, res) => {
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
   const users_id = req.session.userId; // Получение users_id из параметров запроса
-
   console.log(id, users_id);
 
   // Далее обрабатывайте удаление элемента из корзины с учетом users_id
@@ -71,22 +62,19 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; //Это id товара а не корзины!!!
   const usersId = req.session.userId;
   const { quantity } = req.body;
   try {
     // Получаем текущую запись в корзине
-    const cartItem = await Cart.findOne({
-      where: { users_id: usersId, id: id },
+    const cartItem = await Cart.update(req.body, {
+      where: { users_id: usersId, products_id: id },
     });
-
+    console.log(cartItem);
     if (!cartItem) {
       return res.status(404).json({ message: 'Cart item not found' });
     }
-
     cartItem.quantity = quantity;
-    await cartItem.save();
-
     res.json(cartItem);
   } catch (error) {
     console.error(error);
