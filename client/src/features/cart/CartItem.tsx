@@ -18,8 +18,23 @@ function CartItem({ product }: CartProps): JSX.Element {
   const handleRemoveFromCart = (): void => {
     dispatch(removeFromCart(product.id));
   };
-  const handleQuantityFromCart = (): void => {
-    dispatch(updateCartQuantity(product));
+  const handleQuantityChange = (newQuantity: number): void => {
+    // Обновление локального состояния
+    setQuantity(newQuantity);
+    // Отправка нового количества в хранилище
+    dispatch(
+      updateCartQuantity({
+        id: product.id,
+        quantity: newQuantity,
+        name: '',
+        img: '',
+        brand: '',
+        category: '',
+        sex: '',
+        size: '',
+        price: 0,
+      })
+    );
   };
 
   return (
@@ -29,7 +44,20 @@ function CartItem({ product }: CartProps): JSX.Element {
       <h4>{product.brand}</h4>
       <h4>{product.size}</h4>
       <h4>{product.price}</h4>
-      <p>{product.quantity}</p>
+      <div className="quantity_controls">
+        <button
+          onClick={() => handleQuantityChange(quantity - 1)}
+          disabled={quantity <= 1}
+        >
+          -
+        </button>
+        <input
+          type="number"
+          value={quantity}
+          onChange={(e) => handleQuantityChange(Number(e.target.value))}
+        />
+        <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
+      </div>
 
       <form className="quantity_controls"></form>
       <button className="removeFromCart" onClick={handleRemoveFromCart}>

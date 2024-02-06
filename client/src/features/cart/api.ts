@@ -55,7 +55,7 @@ export const updateCartQuantity = async (
 
     const data = await res.json();
     console.log(data.cartItem);
-    return data.cartItem;
+    return data;
   } catch (error) {
     console.error('Error updating cart quantity:', error);
     throw error;
