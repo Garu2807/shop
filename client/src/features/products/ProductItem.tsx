@@ -14,10 +14,9 @@ function ProductItem({ product }: ProductProps): JSX.Element {
   return (
     <div className="product_item">
       <img src={product.img} alt="Товар" />
-      <h4>{product.name}</h4>
-      <h4>{product.brand}</h4> ddd
-      <h4>{product.size}</h4>
-      <h4>{product.price}</h4>
+      <p>{product.brand}</p>
+      <p>{product.name}</p>
+      <p>{product.price}</p>
       <button className="addToCart" onClick={() => handleAddToCart(product)}>
         Добавить в корзину
       </button>

@@ -1,4 +1,8 @@
-import { Product, ProductId } from '../products/types/Product';
+import {
+  Product,
+  ProductId,
+  quantityOfProduct,
+} from '../products/types/Product';
 import { userId } from '../user/types/user';
 import { Cart, CartId } from './types/Cart';
 // import { userId } from '../user/types/user';
@@ -6,7 +10,7 @@ import { Cart, CartId } from './types/Cart';
 export const getCarts = async (): Promise<Product[]> => {
   const response = await fetch('api/cart');
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
@@ -26,7 +30,7 @@ export const removeFromCart = async (id: ProductId): Promise<void> => {
       method: 'DELETE',
       credentials: 'include', // Включите передачу куки с запросом
     });
-
+    console.log(response);
     if (response.ok) {
       const result = await response.json();
       return result;
@@ -42,8 +46,8 @@ export const removeFromCart = async (id: ProductId): Promise<void> => {
 };
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const updateCartQuantity = async (
-  updatedCart: Product
-): Promise<Product> => {
+  updatedCart: quantityOfProduct
+): Promise<quantityOfProduct> => {
   try {
     const res = await fetch(`/api/cart/${updatedCart.id}`, {
       method: 'PUT',
@@ -54,7 +58,7 @@ export const updateCartQuantity = async (
     });
 
     const data = await res.json();
-    console.log(data.cartItem);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error('Error updating cart quantity:', error);
