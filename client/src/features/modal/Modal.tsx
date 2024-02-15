@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './modal.css';
 import Autorization from '../auth/Autorization';
 import Registration from '../auth/Registration';
-import { Link, Route, Routes } from 'react-router-dom';
 
 type ModalProps = {
   active: boolean;
