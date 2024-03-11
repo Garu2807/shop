@@ -8,6 +8,7 @@ export const loadProducts = createAsyncThunk('products/loadProducts', () => {
   /* то, что возвращает thunk -> уходит в case  как action.payload */
   return api.getProducts();
 });
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,
@@ -19,7 +20,6 @@ const productsSlice = createSlice({
     builder.addCase(loadProducts.rejected, (state, action) => {
       console.log(action.error);
     });
-    
 
   },
 });
