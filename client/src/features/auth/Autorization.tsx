@@ -30,7 +30,8 @@ const Autorization: React.FC<AuthorizationProps> = ({ setModalActive }) => {
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              type="text"
+              type="email"
+              pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               placeholder="Email"
             />
           </div>
@@ -38,7 +39,7 @@ const Autorization: React.FC<AuthorizationProps> = ({ setModalActive }) => {
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              type="text"
+              type="password"
               placeholder="Пароль"
             />
           </div>
