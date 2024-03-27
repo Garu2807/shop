@@ -8,7 +8,7 @@ import Modal from '../modal/Modal';
 type AuthorizationProps = {
   setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
+//Авторизация
 const Autorization: React.FC<AuthorizationProps> = ({ setModalActive }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
