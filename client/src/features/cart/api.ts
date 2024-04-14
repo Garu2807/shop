@@ -10,7 +10,6 @@ import { Cart, CartId } from './types/Cart';
 export const getCarts = async (): Promise<Product[]> => {
   const response = await fetch('api/cart');
   const data = await response.json();
-  // console.log(data);
   return data;
 };
 
@@ -65,5 +64,3 @@ export const updateCartQuantity = async (
     throw error;
   }
 };
-
-// Пример использования: // Замените на реальное значение
