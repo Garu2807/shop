@@ -5,32 +5,31 @@ const { User } = require('../../db/models');
 
 router.get('/', async (req, res) => {
   const userId = req.session.userId;
-  // console.log(`твой id ${userId}`); // Предполагая, что идентификатор пользователя хранится в сессии
 
   try {
     const userCart = await User.findByPk(userId, {
       include: {
         model: Product,
-        through: { model: Cart, attributes: ['quantity'] }, // , attributes: ['quantity']
+        through: { model: Cart, attributes: ['quantity'] },
         as: 'Products',
       },
     });
     if (!userCart) {
-      console.log('пусто');
+      return res.status(404).json({ error: 'Cart is empty' });
     }
-    // Преобразование структуры объекта userCart
-    const transformedCart = userCart.Products.map(product => ({
+
+    const transformedCart = userCart.Products.map((product) => ({
       ...product.toJSON(),
-      quantity: product.Cart.quantity
+      quantity: product.Cart.quantity,
     }));
 
-    console.log(transformedCart);
     res.json(transformedCart);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
+
 router.post('/', async (req, res) => {
   const userId = req.session.userId;
   const products_id = req.body.id;

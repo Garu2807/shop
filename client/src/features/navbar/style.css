@@ -1,4 +1,10 @@
-
 .open_btn {
-background-image: 
+  background-image:
+}
+.cart_counter {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 12px;
 }
