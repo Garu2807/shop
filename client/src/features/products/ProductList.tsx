@@ -1,16 +1,16 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import ProductItem from './ProductItem';
-import './style.css';
+import { Container } from './Product.styles';
 function ProductList(): JSX.Element {
   const { products } = useSelector((store: RootState) => store.products);
   return (
-    <div className="product_list">
+    <Container>
       {products &&
         products.map((product) => (
-          <ProductItem product={product}  key={product.id} />
+          <ProductItem product={product} key={product.id} />
         ))}
-    </div>
+    </Container>
   );
 }
 

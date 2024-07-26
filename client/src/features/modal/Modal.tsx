@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import './modal.css';
+// import './modal.css';
 import Autorization from '../auth/Autorization';
 import Registration from '../auth/Registration';
+import { StyledModal, StyledModalContent } from './Modal.styles';
 
 type ModalProps = {
   active: boolean;
@@ -34,12 +35,9 @@ function Modal({ active, setModalActive }: ModalProps): JSX.Element {
 
   return (
     <div className="submodal">
-      <div
-        className={active ? 'modal active' : 'modal'}
-        onClick={() => setModalActive(false)}
-      >
-        <div
-          className={active ? 'modal_content active' : 'modal_content'}
+      <StyledModal active={active} onClick={() => setModalActive(false)}>
+        <StyledModalContent
+          active={active}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="mainReg">
@@ -60,8 +58,8 @@ function Modal({ active, setModalActive }: ModalProps): JSX.Element {
             </div>
             {authMode === AuthMode.Login ? log : reg}
           </div>
-        </div>
-      </div>
+        </StyledModalContent>
+      </StyledModal>
     </div>
   );
 }
