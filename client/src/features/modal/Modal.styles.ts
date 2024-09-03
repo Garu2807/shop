@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 type ModalProps = {
   active: boolean;
 };
@@ -13,9 +14,11 @@ export const StyledModal = styled.div<ModalProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.4s, pointer-events 0.4s;
-  opacity: ${(props) => (props.active ? 1 : 0)};
-  pointer-events: ${(props) => (props.active ? 'all' : 'none')};
+  transition:
+    opacity 0.4s,
+    pointer-events 0.4s;
+  opacity: ${({ active }) => (active ? 1 : 0)};
+  pointer-events: ${({ active }) => (active ? 'all' : 'none')};
 `;
 
 export const StyledModalContent = styled.div<ModalProps>`
@@ -23,7 +26,42 @@ export const StyledModalContent = styled.div<ModalProps>`
   border-radius: 12px;
   background-color: white;
   width: 360px;
-  transition: transform 0.4s, opacity 0.4s;
-  transform: ${(props) => (props.active ? 'scale(1)' : 'scale(0.5)')};
-  opacity: ${(props) => (props.active ? 1 : 0)};
+  transition:
+    transform 0.4s,
+    opacity 0.4s;
+  transform: ${({ active }) => (active ? 'scale(1)' : 'scale(0.5)')};
+  opacity: ${({ active }) => (active ? 1 : 0)};
+`;
+
+export const AuthButton = styled.button<{ isActive: boolean }>`
+  background-color: ${({ isActive }) => (isActive ? '#007bff' : '#fff')};
+  color: ${({ isActive }) => (isActive ? '#fff' : '#000')};
+  border: 1px solid #007bff;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 5px;
+  &:hover {
+    background-color: ${({ isActive }) => (isActive ? '#0056b3' : '#f0f0f0')};
+  }
+`;
+
+export const Title = styled.div`
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
+
+export const MainReg = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const AuthButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
+
+export const AuthorizationContainer = styled.div`
+  width: 100%;
 `;

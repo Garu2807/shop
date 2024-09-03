@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store';
-import { getCarts } from './cartSlice';
+import { getCart } from './cartSlice';
 import CartItem, { CartProps } from './CartItem';
 import { Container } from './Cart.styles';
 function CartList(): JSX.Element {
@@ -12,7 +12,7 @@ function CartList(): JSX.Element {
   const { cart } = useSelector((store: RootState) => store.cart);
   useEffect(() => {
     if (user) {
-      dispatch(getCarts());
+      dispatch(getCart());
     }
   }, [dispatch, user]);
 

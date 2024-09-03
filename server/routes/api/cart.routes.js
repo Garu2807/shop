@@ -14,8 +14,11 @@ router.get('/', async (req, res) => {
         as: 'Products',
       },
     });
+
     if (!userCart) {
-      return res.status(404).json({ error: 'Cart is empty' });
+      return res
+        .status(404)
+        .json({ error: 'Cart is empty', cart: [], totalQuantity: 0 });
     }
 
     const transformedCart = userCart.Products.map((product) => ({
@@ -23,7 +26,12 @@ router.get('/', async (req, res) => {
       quantity: product.Cart.quantity,
     }));
 
-    res.json(transformedCart);
+    const totalQuantity = transformedCart.reduce(
+      (total, product) => total + product.quantity,
+      0
+    );
+
+    res.json({ cart: transformedCart, totalQuantity });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -32,23 +40,51 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const userId = req.session.userId;
-  const products_id = req.body.id;
-  // console.log(userId, products_id);
+  const { id: productId, quantity } = req.body;
+
   try {
-    const { quantity } = req.body;
-    const cart = await Cart.findOrCreate({
+    // Проверяем, есть ли товар уже в корзине
+    const existingCartItem = await Cart.findOne({
       where: {
         users_id: userId,
-        products_id: products_id,
+        products_id: productId,
       },
-      quantity: quantity,
     });
-    console.log(cart);
-    res.json(cart);
-  } catch ({ message }) {
-    res.json({ message });
+
+    if (existingCartItem) {
+      // Если товар уже в корзине, увеличиваем его количество
+      existingCartItem.quantity += quantity;
+      await existingCartItem.save();
+    } else {
+      // Если товара нет в корзине, создаем новую запись
+      await Cart.create({
+        users_id: userId,
+        products_id: productId,
+        quantity: quantity,
+      });
+    }
+
+    // Получаем обновленное количество товаров в корзине
+    const userCart = await User.findByPk(userId, {
+      include: {
+        model: Product,
+        through: { model: Cart, attributes: ['quantity'] },
+        as: 'Products',
+      },
+    });
+
+    const totalQuantity = userCart.Products.reduce(
+      (total, product) => total + product.Cart.quantity,
+      0
+    );
+
+    res.json({ totalQuantity });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
   const users_id = req.session.userId; // Получение users_id из параметров запроса
@@ -61,24 +97,65 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const { id } = req.params; //Это id товара а не корзины!!!
+  const { id } = req.params; // ID продукта
   const usersId = req.session.userId;
   const { quantity } = req.body;
+
   try {
-    // Получаем текущую запись в корзине
-    const cartItem = await Cart.update(req.body, {
-      where: { users_id: usersId, products_id: id },
-    });
-    console.log(cartItem);
-    if (!cartItem) {
+    const [updatedRows] = await Cart.update(
+      { quantity },
+      { where: { users_id: usersId, products_id: id } }
+    );
+
+    if (updatedRows === 0) {
       return res.status(404).json({ message: 'Cart item not found' });
     }
-    cartItem.quantity = quantity;
-    res.json(cartItem);
+
+    const userCart = await User.findByPk(usersId, {
+      include: {
+        model: Product,
+        through: { model: Cart, attributes: ['quantity'] },
+        as: 'Products',
+      },
+    });
+
+    const totalQuantity = userCart.Products.reduce(
+      (total, product) => total + product.Cart.quantity,
+      0
+    );
+
+    res.json({ message: 'Quantity updated', totalQuantity });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
+router.get('/quantity', async (req, res) => {
+  const userId = req.session.userId;
+
+  try {
+    const userCart = await User.findByPk(userId, {
+      include: {
+        model: Product,
+        through: { model: Cart, attributes: ['quantity'] },
+        as: 'Products',
+      },
+    });
+
+    if (!userCart) {
+      return res.status(404).json({ totalQuantity: 0 });
+    }
+
+    const totalQuantity = userCart.Products.reduce(
+      (total, product) => total + product.Cart.quantity,
+      0
+    );
+
+    res.json({ totalQuantity });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 module.exports = router;

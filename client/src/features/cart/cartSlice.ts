@@ -1,34 +1,54 @@
-import UserState from '../user/types/userState';
-import * as api from './api';
-import { CartState } from './types/CartState';
-import { Product, ProductId } from '../products/types/Product';
-import { Cart, CartId } from './types/Cart';
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { CartState } from './types/CartState';
+import { Product } from '../products/types/Product';
+import * as api from './api';
+
 const initialState: CartState = {
   cart: [],
-
-  quantity: 0,
+  totalQuantity: 0,
   error: undefined,
 };
 
-export const getCarts = createAsyncThunk('cart/getCarts', () => {
-  /* то, что возвращает thunk -> уходит в case  как action.payload */
-  return api.getCarts();
+// Асинхронный экшен для получения корзины
+export const getCart = createAsyncThunk('cart/getCart', async () => {
+  const response = await api.getCart();
+  return response;
 });
-export const removeFromCart = createAsyncThunk(
-  'cart/removeFromCart',
-  (products_id: ProductId) => api.removeFromCart(products_id)
-);
-export const addToCart = createAsyncThunk(
-  'cart/addToCart',
-  (product: Product) => {
-    /* то, что возвращает thunk -> уходит в case  как action.payload */
-    return api.addToCart(product);
+
+// Асинхронный экшен для получения общего количества товаров в корзине
+export const fetchCartQuantity = createAsyncThunk(
+  'cart/fetchQuantity',
+  async () => {
+    const response = await api.fetchCartQuantity();
+    return response.totalQuantity;
   }
 );
+
+// Асинхронный экшен для добавления товара в корзину
+export const addToCart = createAsyncThunk(
+  'cart/addToCart',
+  async (product: Product) => {
+    const response = await api.addToCart(product);
+    return response.totalQuantity;
+  }
+);
+
+// Асинхронный экшен для обновления количества товара в корзине
 export const updateCartQuantity = createAsyncThunk(
   'cart/updateCartQuantity',
-  (product: Product) => api.updateCartQuantity(product)
+  async ({ id, quantity }: { id: number; quantity: number }) => {
+    const response = await api.updateCartQuantity({ id, quantity });
+    return response.totalQuantity;
+  }
+);
+
+// Асинхронный экшен для удаления товара из корзины
+export const removeFromCart = createAsyncThunk(
+  'cart/removeFromCart',
+  async (productId: number) => {
+    const response = await api.removeFromCart(productId);
+    return { productId, totalQuantity: response.totalQuantity };
+  }
 );
 
 const cartSlice = createSlice({
@@ -36,32 +56,50 @@ const cartSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getCarts.fulfilled, (state, action) => {
-      state.cart = action.payload;
-    });
-    builder.addCase(getCarts.rejected, (state, action) => {
-      console.log(action.error);
-    });
-    builder.addCase(addToCart.fulfilled, (state, action) => {
-      state.cart.push(action.payload);
-    });
-    builder.addCase(addToCart.rejected, (state, action) => {
-      console.log(action.error);
-    });
-    builder.addCase(removeFromCart.fulfilled, (state, action) => {
-      state.cart = state.cart.filter((v) => v.id !== Number(action.payload));
-    });
-    builder.addCase(removeFromCart.rejected, (state, action) => {
-      console.log(action.error);
-    });
-    builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
-      state.cart = state.cart.map((c) =>
-        c.id !== action.payload.id ? c : action.payload
-      );
-    });
-    builder.addCase(updateCartQuantity.rejected, (state, action) => {
-      console.log(action.error);
-    });
+    builder.addCase(
+      getCart.fulfilled,
+      (
+        state,
+        action: PayloadAction<{ cart: Product[]; totalQuantity: number }>
+      ) => {
+        state.cart = action.payload.cart;
+        state.totalQuantity = action.payload.totalQuantity;
+      }
+    );
+
+    builder.addCase(
+      fetchCartQuantity.fulfilled,
+      (state, action: PayloadAction<number>) => {
+        state.totalQuantity = action.payload;
+      }
+    );
+
+    builder.addCase(
+      addToCart.fulfilled,
+      (state, action: PayloadAction<number>) => {
+        state.totalQuantity = action.payload;
+      }
+    );
+
+    builder.addCase(
+      updateCartQuantity.fulfilled,
+      (state, action: PayloadAction<number>) => {
+        state.totalQuantity = action.payload;
+      }
+    );
+
+    builder.addCase(
+      removeFromCart.fulfilled,
+      (
+        state,
+        action: PayloadAction<{ productId: number; totalQuantity: number }>
+      ) => {
+        state.cart = state.cart.filter(
+          (product) => product.id !== action.payload.productId
+        );
+        state.totalQuantity = action.payload.totalQuantity;
+      }
+    );
   },
 });
 

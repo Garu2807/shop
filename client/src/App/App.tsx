@@ -11,7 +11,6 @@ import { authCheckUser } from '../features/auth/authSlice';
 import { loadProducts } from '../features/products/ProductSlice';
 import { RootState, useAppDispatch } from '../store';
 import CartList from '../features/cart/CartList';
-import { getCarts } from '../features/cart/cartSlice';
 import { useSelector } from 'react-redux';
 // import NavBar from '../features/navbar/NavBar';
 

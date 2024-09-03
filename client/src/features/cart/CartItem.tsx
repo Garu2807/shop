@@ -1,8 +1,6 @@
-// CartItem.tsx
-
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppDispatch } from '../../store';
-import { removeFromCart, updateCartQuantity } from './cartSlice';
+import { removeFromCart, updateCartQuantity } from '../cart/cartSlice';
 import { Product } from '../products/types/Product';
 import {
   Item,
@@ -16,18 +14,22 @@ export type CartProps = {
 };
 
 function CartItem({ product }: CartProps): JSX.Element {
-  const [quantity, setQuantity] = useState(product.quantity);
   const dispatch = useAppDispatch();
+  const [quantity, setQuantity] = useState<number>(product.quantity);
+
+  useEffect(() => {
+    setQuantity(product.quantity);
+  }, [product.quantity]);
+
   const handleRemoveFromCart = (): void => {
     dispatch(removeFromCart(product.id));
   };
-  const handleQuantityChange = (newQuantity: number): void => {
+
+  const handleQuantityChange = (newQuantity: number) => {
+    if (newQuantity < 1) return;
+
     setQuantity(newQuantity);
-    const quantityUpdate: Product = {
-      id: product.id,
-      quantity: newQuantity,
-    };
-    dispatch(updateCartQuantity(quantityUpdate));
+    dispatch(updateCartQuantity({ id: product.id, quantity: newQuantity }));
   };
 
   return (
@@ -37,8 +39,6 @@ function CartItem({ product }: CartProps): JSX.Element {
         <p>{product.name}</p>
         <p>{product.brand}</p>
       </Spec>
-      {/* <p>{product.size}</p>
-        <p>{product.price}</p> */}
       <QuantityControls>
         <button
           onClick={() => handleQuantityChange(quantity - 1)}
@@ -46,13 +46,13 @@ function CartItem({ product }: CartProps): JSX.Element {
         >
           -
         </button>
-
         <input
+          type="number"
           value={quantity}
           onChange={(e) => handleQuantityChange(Number(e.target.value))}
+          min="1"
         />
         <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
-        {/* <BsPlusLg onClick={() => handleQuantityChange(quantity + 1)} /> */}
       </QuantityControls>
       <StyledDeleteButton onClick={handleRemoveFromCart} title="Удалить" />
     </Item>

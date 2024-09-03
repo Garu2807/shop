@@ -3,6 +3,6 @@ import { Cart } from './Cart';
 
 export type CartState = {
   cart: Product[];
-  quantity: number;
+  totalQuantity: number; // Добавляем это свойство
   error: string | undefined;
 };
