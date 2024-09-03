@@ -1,56 +1,97 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { authorization } from './authSlice';
 import './style.css';
-import Modal from '../modal/Modal';
-// Authorization.tsx
+
 type AuthorizationProps = {
   setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleAuthMode: () => void;
 };
-//Авторизация
-const Autorization: React.FC<AuthorizationProps> = ({ setModalActive }) => {
+
+const Authorization: React.FC<AuthorizationProps> = ({
+  setModalActive,
+  toggleAuthMode,
+}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-  const onHadleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+
+  const validateEmail = (email: string): boolean => {
+    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
+  };
+
+  const onHandleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    dispatch(authorization({ email, password }));
-    setModalActive(false);
-    navigate('/');
+
+    if (!email.trim() || !password.trim()) {
+      setError('Email и пароль не могут быть пустыми');
+      return;
+    }
+
+    if (!validateEmail(email.trim())) {
+      setError('Некорректный email');
+      return;
+    }
+
+    try {
+      await dispatch(
+        authorization({ email: email.trim(), password: password.trim() })
+      ).unwrap();
+      setError('');
+      setModalActive(false);
+      navigate('/');
+    } catch (authError: unknown) {
+      if (
+        authError instanceof Error &&
+        authError.message === 'User not found'
+      ) {
+        setError('Пользователь не найден. Хотите зарегистрироваться?');
+      } else {
+        setError(
+          'Ошибка авторизации. Проверьте введенные данные и попробуйте снова.'
+        );
+      }
+    }
   };
 
   return (
-    <>
-      <div className="form__container">
-        <form onSubmit={onHadleSubmit} className="authForm">
-          <div className="inputs">
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-              placeholder="Email"
-            />
+    <div className="form__container">
+      <form onSubmit={onHandleSubmit} className="authForm">
+        <div className="inputs">
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="Email"
+          />
+        </div>
+        <div className="inputs">
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Пароль"
+          />
+        </div>
+        {error && (
+          <div className="error">
+            {error}{' '}
+            {error === 'Пользователь не найден. Хотите зарегистрироваться?' && (
+              <button type="button" onClick={toggleAuthMode}>
+                Зарегистрироваться
+              </button>
+            )}
           </div>
-          <div className="inputs">
-            <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              placeholder="Пароль"
-            />
-          </div>
-
-          <button type="submit" className="authBtn">
-            Войти
-          </button>
-        </form>
-      </div>
-    </>
+        )}
+        <button type="submit" className="authBtn">
+          Войти
+        </button>
+      </form>
+    </div>
   );
 };
 
-export default Autorization;
+export default Authorization;

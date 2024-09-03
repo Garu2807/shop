@@ -7,6 +7,7 @@ export type Cart = {
   products_id: Product['id'];
   quantity: number;
 };
+export type changeCart = Pick<Cart, 'quantity'>;
 export type CartProduct = {
   id: number;
   users_id: User['id'];
@@ -19,6 +20,6 @@ export type CartProduct = {
   sex: string;
   size: string;
   price: number;
-}
+};
 export type CartId = Cart['id'];
 // types.ts

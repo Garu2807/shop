@@ -38,7 +38,7 @@ const Registration: React.FC<RegistrationProps> = ({ setModalActive }) => {
           <input
             value={email}
             onChange={(e) => SetEmail(e.target.value)}
-            type="text"
+            type="email"
             placeholder="Email"
           />
         </div>
@@ -46,7 +46,7 @@ const Registration: React.FC<RegistrationProps> = ({ setModalActive }) => {
           <input
             value={password}
             onChange={(e) => SetPassword(e.target.value)}
-            type="text"
+            type="password"
             placeholder="Пароль"
           />
         </div>
@@ -57,6 +57,6 @@ const Registration: React.FC<RegistrationProps> = ({ setModalActive }) => {
       </form>
     </div>
   );
-}
+};
 
 export default Registration;

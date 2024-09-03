@@ -1,69 +1,86 @@
-import {
-  Product,
-  ProductId,
-  quantityOfProduct,
-} from '../products/types/Product';
-import { userId } from '../user/types/user';
-import { Cart, CartId } from './types/Cart';
-// import { userId } from '../user/types/user';
+import { Product, ProductId } from '../products/types/Product';
 
-export const getCarts = async (): Promise<Product[]> => {
-  const response = await fetch('api/cart');
-  const data = await response.json();
-  // console.log(data);
-  return data;
+// API-функция для получения корзины
+export const getCart = async (): Promise<{
+  cart: Product[];
+  totalQuantity: number;
+}> => {
+  const response = await fetch('/api/cart');
+  if (!response.ok) {
+    throw new Error('Failed to fetch cart');
+  }
+  return response.json();
 };
 
-export const addToCart = async (product: Product): Promise<Product> => {
-  const res = await fetch('/api/cart', {
+// API-функция для получения общего количества товаров в корзине
+export const fetchCartQuantity = async (): Promise<{
+  totalQuantity: number;
+}> => {
+  const response = await fetch('/api/cart/quantity');
+  if (!response.ok) {
+    throw new Error('Failed to fetch cart quantity');
+  }
+  return response.json();
+};
+
+// API-функция для добавления товара в корзину
+export const addToCart = async (product: Product): Promise<{ totalQuantity: number }> => {
+  const response = await fetch('/api/cart', {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(product),
   });
-  return res.json();
+
+  if (!response.ok) {
+    throw new Error('Failed to add product to cart');
+  }
+
+  return response.json();
 };
-export const removeFromCart = async (id: ProductId): Promise<void> => {
+
+
+// API-функция для обновления количества товара в корзине
+export const updateCartQuantity = async ({
+  id,
+  quantity,
+}: {
+  id: number;
+  quantity: number;
+}): Promise<{ totalQuantity: number }> => {
+  const response = await fetch(`/api/cart/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ quantity }),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update cart quantity');
+  }
+  return response.json();
+};
+
+// API-функция для удаления товара из корзины
+export const removeFromCart = async (
+  id: ProductId
+): Promise<{ totalQuantity: number }> => {
   try {
     const response = await fetch(`/api/cart/${id}`, {
       method: 'DELETE',
-      credentials: 'include', // Включите передачу куки с запросом
-    });
-    console.log(response);
-    if (response.ok) {
-      const result = await response.json();
-      return result;
-      // Дополнительная логика после успешного удаления
-    } else {
-      console.error(`Ошибка удаления товара из корзины: ${response.status}`);
-      // Обработка ошибки удаления
-    }
-  } catch (error) {
-    console.error('Произошла ошибка при удалении товара из корзины:', error);
-    // Обработка других ошибок
-  }
-};
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const updateCartQuantity = async (
-  updatedCart: quantityOfProduct
-): Promise<quantityOfProduct> => {
-  try {
-    const res = await fetch(`/api/cart/${updatedCart.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(updatedCart),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      credentials: 'include',
     });
 
-    const data = await res.json();
-    // console.log(data);
-    return data;
+    if (!response.ok) {
+      console.error(`Ошибка удаления товара из корзины: ${response.status}`);
+      throw new Error('Failed to remove product from cart');
+    }
+
+    const result = await response.json();
+    return result; // Предполагается, что сервер возвращает { totalQuantity }
   } catch (error) {
-    console.error('Error updating cart quantity:', error);
+    console.error('Произошла ошибка при удалении товара из корзины:', error);
     throw error;
   }
 };
-
-// Пример использования: // Замените на реальное значение

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import './modal.css';
-import Autorization from '../auth/Autorization';
+import Authorization from '../auth/Autorization';
 import Registration from '../auth/Registration';
+import {
+  StyledModal,
+  StyledModalContent,
+  AuthButton,
+  Title,
+  MainReg,
+  AuthButtons,
+  AuthorizationContainer,
+} from './Modal.styles';
 
 type ModalProps = {
   active: boolean;
@@ -13,57 +21,53 @@ enum AuthMode {
   Register,
 }
 
-function Modal({ active, setModalActive }: ModalProps): JSX.Element {
+const Modal: React.FC<ModalProps> = ({ active, setModalActive }) => {
   const [authMode, setAuthMode] = useState(AuthMode.Login);
-  const toggleAuthMode = () => {
+
+  const toggleAuthMode = (): void => {
     setAuthMode((prevMode) =>
       prevMode === AuthMode.Login ? AuthMode.Register : AuthMode.Login
     );
   };
 
   const log = (
-    <div className="authorization">
-      <Autorization setModalActive={setModalActive} />
-    </div>
+    <AuthorizationContainer>
+      <Authorization
+        setModalActive={setModalActive}
+        toggleAuthMode={toggleAuthMode}
+      />
+    </AuthorizationContainer>
   );
   const reg = (
-    <div className="authorization">
+    <AuthorizationContainer>
       <Registration setModalActive={setModalActive} />
-    </div>
+    </AuthorizationContainer>
   );
 
   return (
-    <div className="submodal">
-      <div
-        className={active ? 'modal active' : 'modal'}
-        onClick={() => setModalActive(false)}
-      >
-        <div
-          className={active ? 'modal_content active' : 'modal_content'}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="mainReg">
-            <div className="title">Войдите или создайте аккаунт</div>
-            <div className="authButtons">
-              <button
-                onClick={() => setAuthMode(AuthMode.Login)}
-                className={authMode === AuthMode.Login ? 'active' : ''}
-              >
-                Вход
-              </button>
-              <button
-                onClick={() => setAuthMode(AuthMode.Register)}
-                className={authMode === AuthMode.Register ? 'active' : ''}
-              >
-                Регистрация
-              </button>
-            </div>
-            {authMode === AuthMode.Login ? log : reg}
-          </div>
-        </div>
-      </div>
-    </div>
+    <StyledModal active={active} onClick={() => setModalActive(false)}>
+      <StyledModalContent active={active} onClick={(e) => e.stopPropagation()}>
+        <MainReg>
+          <Title>Войдите или создайте аккаунт</Title>
+          <AuthButtons>
+            <AuthButton
+              onClick={() => setAuthMode(AuthMode.Login)}
+              isActive={authMode === AuthMode.Login}
+            >
+              Вход
+            </AuthButton>
+            <AuthButton
+              onClick={() => setAuthMode(AuthMode.Register)}
+              isActive={authMode === AuthMode.Register}
+            >
+              Регистрация
+            </AuthButton>
+          </AuthButtons>
+          {authMode === AuthMode.Login ? log : reg}
+        </MainReg>
+      </StyledModalContent>
+    </StyledModal>
   );
-}
+};
 
 export default Modal;

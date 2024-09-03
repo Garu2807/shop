@@ -29,20 +29,24 @@ router.post('/registration', async (req, res) => {
 router.post('/authorization', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    const compare = await bcrypt.compare(password, user.password);
     if (!email || !password) {
-      res.json({ message: 'Заполните все поля' });
-      return;
+      return res.status(400).json({ message: 'Заполните все поля' });
     }
-    if (!user || !compare) {
-      res.json({ message: 'Такого юзера не существует или пароль неверный' });
-      return;
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: 'Такого пользователя не существует' });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Неверный пароль' });
     }
     req.session.userId = user.id;
     res.json(user);
-  } catch ({ message }) {
-    res.json({ message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Произошла ошибка на сервере' });
   }
 });
 
@@ -62,6 +66,7 @@ router.get('/check', async (req, res) => {
   try {
     if (req.session.userId) {
       const user = await User.findOne({ where: { id: req.session.userId } });
+      console.log(user.id);
       res.json(user);
     }
     res.end();
