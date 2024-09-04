@@ -66,7 +66,7 @@ router.get('/check', async (req, res) => {
   try {
     if (req.session.userId) {
       const user = await User.findOne({ where: { id: req.session.userId } });
-      console.log(user.id);
+      console.log(user.isAdmin);
       res.json(user);
     }
     res.end();

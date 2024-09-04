@@ -1,13 +1,36 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ProductsState from './types/ProductState';
 import * as api from './api';
+import { Product, ProductFormInput, ProductId } from './types/Product';
+
 const initialState: ProductsState = {
   products: [],
 };
-export const loadProducts = createAsyncThunk('products/loadProducts', () => {
-  /* то, что возвращает thunk -> уходит в case  как action.payload */
-  return api.getProducts();
-});
+
+// Загрузка продуктов
+export const loadProducts = createAsyncThunk(
+  'products/loadProducts',
+  async () => {
+    return api.getProducts();
+  }
+);
+
+// Добавление продукта
+export const addProducts = createAsyncThunk(
+  'products/addProducts',
+  async (newProduct: ProductFormInput) => {
+    return api.addProducts(newProduct);
+  }
+);
+
+// Удаление продукта
+export const removeProducts = createAsyncThunk(
+  'products/removeProducts',
+  async (productId: ProductId) => {
+    await api.removeProduct(productId);
+    return productId; // Возвращаем productId, чтобы использовать его в reducer
+  }
+);
 
 const productsSlice = createSlice({
   name: 'products',
@@ -20,7 +43,21 @@ const productsSlice = createSlice({
     builder.addCase(loadProducts.rejected, (state, action) => {
       console.log(action.error);
     });
-
+    builder.addCase(addProducts.fulfilled, (state, action) => {
+      state.products.push(action.payload);
+    });
+    builder.addCase(addProducts.rejected, (state, action) => {
+      console.log(action.error);
+    });
+    builder.addCase(removeProducts.fulfilled, (state, action) => {
+      state.products = state.products.filter(
+        (p) => p.id !== action.payload // Используем action.payload, который возвращает productId
+      );
+    });
+    builder.addCase(removeProducts.rejected, (state, action) => {
+      console.log(action.error);
+    });
   },
 });
+
 export default productsSlice.reducer;

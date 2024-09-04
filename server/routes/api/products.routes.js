@@ -1,7 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const { Product } = require('../../db/models');
+const { Product, User } = require('../../db/models');
+const { where } = require('sequelize');
 // Получаем все товары
 router.get('/', (req, res) => {
   Product.findAll()
@@ -10,20 +11,27 @@ router.get('/', (req, res) => {
 });
 // Добаление товара (только администратор)
 router.post('/', async (req, res) => {
-  const { name, img, brand, category, sex, size, price } = req.body;
-  try {
-    const product = await Product.create({
-      name,
-      img,
-      brand,
-      category,
-      sex,
-      size,
-      price,
+  if (req.session.userId) {
+    const { name, img, brand, category, sex, size, price } = req.body;
+    const user = await User.findOne({
+      where: { id: req.session.userId, isAdmin: true },
     });
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (user) {
+      try {
+        const product = await Product.create({
+          name,
+          img,
+          brand,
+          category,
+          sex,
+          size,
+          price,
+        });
+        res.json(product);
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
   }
 });
 

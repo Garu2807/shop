@@ -1,16 +1,29 @@
-import { Product } from './types/Product';
+import { Product, ProductFormInput, ProductId } from './types/Product';
 export const getProducts = async (): Promise<Product[]> => {
   const response = await fetch('api/products');
   const data = await response.json();
   return data.products;
 };
-export const addProducts = async (product: Product): Promise<Product> => {
+export const addProducts = async (
+  newProduct: ProductFormInput
+): Promise<Product> => {
   const res = await fetch('/api/products', {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
     },
-    body: JSON.stringify(product),
+    body: JSON.stringify(newProduct),
   });
-  return res.json();
+  const data = await res.json();
+  return data;
+};
+export const removeProduct = async (id: ProductId): Promise<ProductId> => {
+  const response = await fetch(`/api/products/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete product');
+  }
+  const data = await response.json();
+  return data;
 };

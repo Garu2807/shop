@@ -6,17 +6,19 @@ import { fetchCartQuantity } from '../cart/cartSlice';
 import { LuShoppingCart } from 'react-icons/lu';
 import { FaRegUser } from 'react-icons/fa';
 import { CiLogout } from 'react-icons/ci';
+import ProudctAddForm from '../products/ProudctAddForm'; // Импортируем компонент формы
 import Modal from '../modal/Modal';
+import { ProductFormInput } from '../products/types/Product'; // Импортируем тип ProductFormInput
 
 function NavBar(): JSX.Element {
   const { user } = useAppSelector((state) => state.auth);
   const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
   const [modalActive, setModalActive] = useState(false);
+  const [showForm, setShowForm] = useState(false); // Состояние для показа формы
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (user) {
-      // Проверка на наличие пользователя перед отправкой запроса
       dispatch(fetchCartQuantity());
     }
   }, [dispatch, user]);
@@ -26,6 +28,17 @@ function NavBar(): JSX.Element {
   ) => {
     e.preventDefault();
     dispatch(logOut());
+  };
+
+  const emptyProduct: ProductFormInput = {
+    name: '',
+    img: '',
+    brand: '',
+    category: '',
+    size: '',
+    sex: '',
+    price: 0,
+    quantity: 0, // Указали обязательное свойство quantity
   };
 
   return (
@@ -38,13 +51,6 @@ function NavBar(): JSX.Element {
               alt="Farfetch Logo"
               width={201}
             />
-          </Link>
-          <Link to="/cart">
-            <button className="open_btn">
-              <LuShoppingCart />
-              <span className="cart-counter">{totalQuantity}</span>{' '}
-              {/* Отображение количества товаров в корзине */}
-            </button>
           </Link>
           {!user ? (
             <>
@@ -66,10 +72,27 @@ function NavBar(): JSX.Element {
                   <FaRegUser />
                 </button>
               </Link>
+              <Link to="/cart">
+                <button className="open_btn">
+                  <LuShoppingCart />
+                  <span className="cart-counter">{totalQuantity}</span>
+                </button>
+              </Link>
+              {user?.isAdmin && (
+                <button className="open_btn" onClick={() => setShowForm(true)}>
+                  Добавление товара
+                </button>
+              )}
             </>
           )}
         </div>
       </div>
+      {showForm && (
+        <ProudctAddForm
+          product={emptyProduct} // Передаем пустой объект продукта
+          setShowForm={setShowForm} // Передаем функцию для закрытия формы
+        />
+      )}
       <Outlet />
     </header>
   );
