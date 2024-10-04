@@ -19,7 +19,8 @@ export const loadProducts = createAsyncThunk(
 export const addProducts = createAsyncThunk(
   'products/addProducts',
   async (newProduct: ProductFormInput) => {
-    return api.addProducts(newProduct);
+    const response = await api.addProducts(newProduct);
+    return response;  // здесь возвращаем новый продукт с `id`
   }
 );
 

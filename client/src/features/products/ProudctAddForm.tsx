@@ -26,12 +26,12 @@ function ProudctAddForm({
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     if (
-      name.trim() ||
-      img.trim() ||
-      brand.trim() ||
-      category.trim() ||
-      sex.trim() ||
-      size.trim() === ''
+      !name.trim() ||
+      !img.trim() ||
+      !brand.trim() ||
+      !category.trim() ||
+      !sex.trim() ||
+      !size.trim()
     )
       return;
     const newProduct: ProductFormInput = {
@@ -42,7 +42,7 @@ function ProudctAddForm({
       sex,
       size,
       price,
-      quantity, // Указываем количество
+      quantity: 1, // Указываем количество
     };
     dispatch(addProducts(newProduct));
     setShowForm(false); // Закрываем форму после сабмита

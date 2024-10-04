@@ -10,11 +10,12 @@ export const addProducts = async (
   const res = await fetch('/api/products', {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(newProduct),
   });
   const data = await res.json();
+  console.log(data);
   return data;
 };
 export const removeProduct = async (id: ProductId): Promise<ProductId> => {

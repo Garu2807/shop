@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     });
     if (user) {
       try {
-        const product = await Product.create({
+        const newProduct = await Product.create({
           name,
           img,
           brand,
@@ -27,7 +27,8 @@ router.post('/', async (req, res) => {
           size,
           price,
         });
-        res.json(product);
+        res.json(newProduct.dataValues);
+        console.log(newProduct.dataValues);
       } catch (error) {
         res.status(500).json({ message: error.message });
       }
