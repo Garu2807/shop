@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
           size,
           price,
         });
-        res.json(newProduct.dataValues);
+        res.json(newProduct.dataVal);
         console.log(newProduct.dataValues);
       } catch (error) {
         res.status(500).json({ message: error.message });
@@ -40,17 +40,28 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
+    // Ищем продукт по ID
     const product = await Product.findOne({
       where: { id },
     });
-    if (product) {
-      await product.destroy();
-      res.json({ message: true });
-    } else {
-      res.json({ message: false, error: 'Product not found' });
+
+    if (!product) {
+      // Если продукт не найден, возвращаем 404
+      return res
+        .status(404)
+        .json({ message: false, error: 'Product not found' });
     }
+
+    // Удаляем продукт (сработает каскадное удаление всех связанных записей)
+    await product.destroy();
+
+    // Отправляем успешный ответ
+    res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // В случае ошибки отправляем статус 500
+    res
+      .status(500)
+      .json({ message: 'Failed to delete product', error: error.message });
   }
 });
 

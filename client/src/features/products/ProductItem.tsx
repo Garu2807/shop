@@ -4,7 +4,14 @@ import { Product } from '../products/types/Product';
 import { addToCart, updateCartQuantity } from '../cart/cartSlice';
 import { Item } from './Product.styles';
 import { removeProducts } from './ProductSlice';
-
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+  type MRT_Row,
+} from 'material-react-table';
+import { Table } from 'react-bootstrap';
+import ProductTable from './ProductTable';
 export type ProductProps = {
   product: Product;
 };
@@ -39,15 +46,10 @@ function ProductItem({ product }: ProductProps): JSX.Element {
       <img src={product.img} alt={product.name} />
       <p>{product.brand}</p>
       <p>{product.name}</p>
-      <p>{product.price}</p>
-
-      {user?.isAdmin ? (
-        <button onClick={() => handleRemove(product)}>Удаление</button>
-      ) : (
-        <button className="addToCart" onClick={() => handleAddToCart(product)}>
-          Добавить в корзину
-        </button>
-      )}
+      <p>{product.price}</p>{' '}
+      <button className="addToCart" onClick={() => handleAddToCart(product)}>
+        Добавить в корзину
+      </button>
     </Item>
   );
 }

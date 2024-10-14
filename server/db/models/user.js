@@ -4,14 +4,21 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({ Product, Cart }) {
-      this.hasMany(Cart, { foreignKey: 'users_id' });
+      // Связь с продуктами через корзину
       this.belongsToMany(Product, {
         through: 'Cart',
         foreignKey: 'users_id',
         as: 'Products',
       });
+
+      // Связь с корзиной, каскадное удаление
+      this.hasMany(Cart, {
+        foreignKey: 'users_id',
+        onDelete: 'CASCADE', // Каскадное удаление
+      });
     }
   }
+
   User.init(
     {
       name: {
@@ -37,5 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'User',
     }
   );
+
   return User;
 };

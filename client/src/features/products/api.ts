@@ -26,5 +26,6 @@ export const removeProduct = async (id: ProductId): Promise<ProductId> => {
     throw new Error('Failed to delete product');
   }
   const data = await response.json();
+  console.log(data);
   return data;
 };

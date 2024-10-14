@@ -5,13 +5,22 @@ module.exports = (sequelize, DataTypes) => {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
      */
     static associate({ User, Product }) {
-      this.belongsTo(User, { foreignKey: 'users_id' });
-      this.belongsTo(Product, { foreignKey: 'products_id' });
+      // Связь с пользователем
+      this.belongsTo(User, {
+        foreignKey: 'users_id',
+        onDelete: 'CASCADE', // Каскадное удаление
+      });
+
+      // Связь с продуктом
+      this.belongsTo(Product, {
+        foreignKey: 'products_id',
+        onDelete: 'CASCADE', // Каскадное удаление
+      });
     }
   }
+
   Cart.init(
     {
       users_id: {
@@ -41,5 +50,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Cart',
     }
   );
+
   return Cart;
 };

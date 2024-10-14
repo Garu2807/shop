@@ -9,13 +9,15 @@ import Autorization from '../features/auth/Autorization';
 import Modal from '../features/modal/Modal';
 import { authCheckUser } from '../features/auth/authSlice';
 import { loadProducts } from '../features/products/ProductSlice';
-import { RootState, useAppDispatch } from '../store';
+import { RootState, useAppDispatch, useAppSelector } from '../store';
 import CartList from '../features/cart/CartList';
 import { useSelector } from 'react-redux';
+import ProductTable from '../features/products/ProductTable';
 // import NavBar from '../features/navbar/NavBar';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   useEffect(() => {
     dispatch(loadProducts());
     dispatch(authCheckUser());
@@ -23,13 +25,14 @@ function App(): JSX.Element {
   return (
     <div className="App">
       <NavBar />
-      <Routes>
-        <Route path="/cart" element={<CartList />} />
-        <Route path="/" element={<ProductList />} />
-      </Routes>
-
-      {/* {<ProductList />}
-      {<CartList />} */}
+      {user?.isAdmin ? (
+        <ProductTable />
+      ) : (
+        <Routes>
+          <Route path="/cart" element={<CartList />} />
+          <Route path="/" element={<ProductList />} />
+        </Routes>
+      )}
     </div>
   );
 }
