@@ -22,10 +22,23 @@ export const removeProduct = async (id: ProductId): Promise<ProductId> => {
   const response = await fetch(`/api/products/${id}`, {
     method: 'DELETE',
   });
-  if (!response.ok) {
-    throw new Error('Failed to delete product');
-  }
+  // if (!response.ok) {
+  //   throw new Error('Failed to delete product');
+  // }
   const data = await response.json();
   console.log(data);
+  return data;
+};
+export const updateProduct = async (
+  updatedProduct: Product
+): Promise<Product> => {
+  const res = await fetch(`/api/products/${updatedProduct.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(updatedProduct),
+    headers: {
+      'Content-type': 'application/json',
+    },
+  });
+  const data = await res.json();
   return data;
 };

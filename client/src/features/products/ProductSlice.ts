@@ -20,7 +20,7 @@ export const addProducts = createAsyncThunk(
   'products/addProducts',
   async (newProduct: ProductFormInput) => {
     const response = await api.addProducts(newProduct);
-    return response;  // здесь возвращаем новый продукт с `id`
+    return response; // здесь возвращаем новый продукт с `id`
   }
 );
 
@@ -30,6 +30,12 @@ export const removeProducts = createAsyncThunk(
   async (productId: ProductId) => {
     await api.removeProduct(productId);
     return productId; // Возвращаем productId, чтобы использовать его в reducer
+  }
+);
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async (product: Product) => {
+    return api.updateProduct(product);
   }
 );
 
@@ -56,6 +62,15 @@ const productsSlice = createSlice({
       );
     });
     builder.addCase(removeProducts.rejected, (state, action) => {
+      console.log(action.error);
+    });
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      state.products = state.products.map((p) =>
+        p.id !== action.payload.id ? p : action.payload
+      );
+    });
+    builder.addCase(updateProduct.rejected, (state, action) => {
+      /* тут обрабатывается ошибка */
       console.log(action.error);
     });
   },

@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const { Product, User } = require('../../db/models');
+const { Product, User, Cart } = require('../../db/models');
 const { where } = require('sequelize');
 // Получаем все товары
 router.get('/', (req, res) => {
@@ -52,7 +52,12 @@ router.delete('/:id', async (req, res) => {
         .json({ message: false, error: 'Product not found' });
     }
 
-    // Удаляем продукт (сработает каскадное удаление всех связанных записей)
+    // Удаляем все записи из Carts, связанные с этим продуктом
+    await Cart.destroy({
+      where: { id },
+    });
+
+    // Удаляем продукт
     await product.destroy();
 
     // Отправляем успешный ответ
@@ -64,5 +69,11 @@ router.delete('/:id', async (req, res) => {
       .json({ message: 'Failed to delete product', error: error.message });
   }
 });
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
 
+  Product.update(req.body, { where: { id }, returning: true })
+    .then((updatedProduct) => res.json(updatedProduct))
+    .catch((error) => res.status(500).json(error));
+});
 module.exports = router;

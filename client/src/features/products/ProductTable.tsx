@@ -57,13 +57,22 @@ function ProductTable(): JSX.Element {
         header: 'Действия',
         size: 100,
         Cell: ({ row }) => (
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => handleRemove(row.original)} // Удаляем продукт
-          >
-            Удалить
-          </Button>
+          <>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => handleRemove(row.original)} // Удаляем продукт
+            >
+              Удалить
+            </Button>
+            {/* <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => handleRemove(row.original)} // Удаляем продукт
+            >
+              Удалить
+            </Button> */}
+          </>
         ),
       },
     ],

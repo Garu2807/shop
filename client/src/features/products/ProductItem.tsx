@@ -46,7 +46,7 @@ function ProductItem({ product }: ProductProps): JSX.Element {
       <img src={product.img} alt={product.name} />
       <p>{product.brand}</p>
       <p>{product.name}</p>
-      <p>{product.price}</p>{' '}
+      <p>{product.price}</p>
       <button className="addToCart" onClick={() => handleAddToCart(product)}>
         Добавить в корзину
       </button>
