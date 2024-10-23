@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from '../../store';
 import { loadProducts, removeProducts } from './ProductSlice';
 import { Product } from './types/Product';
 import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
 
 function ProductTable(): JSX.Element {
   const products = useSelector((store: RootState) => store.products.products);
@@ -12,8 +13,10 @@ function ProductTable(): JSX.Element {
 
   // Загружаем продукты при монтировании компонента
   useEffect(() => {
-    dispatch(loadProducts());
-  }, [dispatch]);
+    if (products) {
+      dispatch(loadProducts());
+    }
+  }, [dispatch, products]);
 
   // Функция для удаления продукта
   const handleRemove = (product: Product): void => {
@@ -27,6 +30,29 @@ function ProductTable(): JSX.Element {
         header: 'ID',
         size: 150,
       },
+      {
+        header: 'Фото',
+        size: 150,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+            }}
+          >
+            <img
+              alt="avatar"
+              height={50}
+              src={row.original.img}
+              loading="lazy"
+            />
+            {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
+            <span>{renderedCellValue}</span>
+          </Box>
+        ),
+      },
+
       {
         accessorKey: 'name',
         header: 'Название товара',
@@ -56,7 +82,7 @@ function ProductTable(): JSX.Element {
         id: 'actions',
         header: 'Действия',
         size: 100,
-        Cell: ({ row }) => (
+        Cell: ({ renderedCellValue, row }) => (
           <>
             <Button
               variant="contained"
