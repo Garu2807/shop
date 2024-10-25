@@ -1,108 +1,121 @@
-import React, { useState } from 'react';
-import { ProductFormInput } from './types/Product'; // Используем ProductFormInput
-import { useAppDispatch } from '../../store';
-import { addProducts } from './ProductSlice';
+// ProductAddForm.tsx
 
-type ProductPropsType = {
-  product: ProductFormInput; // Используем ProductFormInput как тип для пропса
-  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+import React, { useState } from 'react';
+import { ProductFormInput } from './types/Product';
+import { TextField, Button, Box, Typography } from '@mui/material';
+
+type ProductAddFormProps = {
+  onAddProduct: (product: ProductFormInput) => void;
+  onCloseForm: () => void;
+  initialProduct: ProductFormInput;
 };
 
-function ProudctAddForm({
-  product,
-  setShowForm,
-}: ProductPropsType): JSX.Element {
-  const dispatch = useAppDispatch();
-  const [name, setName] = useState(product.name);
-  const [img, setImg] = useState(product.img);
-  const [brand, setBrand] = useState(product.brand);
-  const [category, setCategory] = useState(product.category);
-  const [size, setSize] = useState(product.size);
-  const [sex, setSex] = useState(product.sex);
-  const [price, setPrice] = useState(product.price);
-  const [quantity, setQuantity] = useState(product.quantity); // Добавляем поле quantity
+const ProductAddForm: React.FC<ProductAddFormProps> = ({
+  onAddProduct,
+  onCloseForm,
+  initialProduct,
+}) => {
+  const [newProduct, setNewProduct] =
+    useState<ProductFormInput>(initialProduct);
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleAddProduct = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewProduct({
+      ...newProduct,
+      [name]: name === 'price' || name === 'quantity' ? Number(value) : value,
+    });
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !name.trim() ||
-      !img.trim() ||
-      !brand.trim() ||
-      !category.trim() ||
-      !sex.trim() ||
-      !size.trim()
-    )
-      return;
-    const newProduct: ProductFormInput = {
-      name,
-      img,
-      brand,
-      category,
-      sex,
-      size,
-      price,
-      quantity: 1, // Указываем количество
-    };
-    dispatch(addProducts(newProduct));
-    setShowForm(false); // Закрываем форму после сабмита
+    onAddProduct(newProduct);
+    onCloseForm();
   };
 
   return (
-    <div>
-      <form onSubmit={handleAddProduct}>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Name"
-        />
-        <input
-          type="text"
-          value={brand}
-          onChange={(e) => setBrand(e.target.value)}
-          placeholder="Brand"
-        />
-        <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
-        />
-        <input
-          type="text"
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
-          placeholder="Size"
-        />
-        <input
-          type="number"
-          value={price}
-          onChange={(e) => setPrice(Number(e.target.value))}
-          placeholder="Price"
-        />
-        <input
-          type="text"
-          value={sex}
-          onChange={(e) => setSex(e.target.value)}
-          placeholder="Sex"
-        />
-        <input
-          type="text"
-          value={img}
-          onChange={(e) => setImg(e.target.value)}
-          placeholder="Image URL"
-        />
-        <input
-          type="number"
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          placeholder="Quantity"
-        />
-        <button type="submit">Добавить товар</button>
-      </form>
-    </div>
+    <Box
+      component="form"
+      onSubmit={handleFormSubmit}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        mt: 2,
+        p: 2,
+        border: '1px solid #ddd',
+        borderRadius: 2,
+        boxShadow: 3,
+        backgroundColor: '#f9f9f9',
+      }}
+    >
+      <Typography variant="h6" align="center" gutterBottom>
+        Добавить новый товар
+      </Typography>
+      <TextField
+        label="Название товара"
+        name="name"
+        value={newProduct.name}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Производитель"
+        name="brand"
+        value={newProduct.brand}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Категория"
+        name="category"
+        value={newProduct.category}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Размер"
+        name="size"
+        value={newProduct.size}
+        onChange={handleInputChange}
+      />
+      <TextField
+        label="Стоимость"
+        name="price"
+        type="number"
+        value={newProduct.price}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Пол"
+        name="sex"
+        value={newProduct.sex}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="URL изображения"
+        name="img"
+        value={newProduct.img}
+        onChange={handleInputChange}
+        required
+      />
+      <TextField
+        label="Количество"
+        name="quantity"
+        type="number"
+        value={newProduct.quantity}
+        onChange={handleInputChange}
+        required
+      />
+      <Button variant="contained" color="primary" type="submit">
+        Сохранить
+      </Button>
+      <Button variant="outlined" onClick={onCloseForm}>
+        Отмена
+      </Button>
+    </Box>
   );
-}
+};
 
-export default ProudctAddForm;
+export default ProductAddForm;

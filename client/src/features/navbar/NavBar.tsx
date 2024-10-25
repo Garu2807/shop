@@ -5,18 +5,16 @@ import { logOut } from '../auth/authSlice';
 import { fetchCartQuantity } from '../cart/cartSlice';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import ProudctAddForm from '../products/ProudctAddForm';
 import Modal from '../modal/Modal';
 import { ProductFormInput } from '../products/types/Product';
 import {
-  CartCounter,
   Container,
-  StyledCartIcon,
   StyledLogoutIcon,
   StyledAuthIcon,
   Navbar,
-  // StyledLink,
+  StyledCartIcon,
+  CartCounter,
 } from './NavBar.styles';
 
 type NavbarProps = {
@@ -31,7 +29,7 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (user) {
+    if (user && !user.isAdmin) {
       dispatch(fetchCartQuantity());
     }
   }, [dispatch, user]);
@@ -55,7 +53,6 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
   return (
     <header>
       <Navbar>
-        {/* <div className="links"> */}
         <Link to="/">
           <img
             src="https://uploads-ssl.webflow.com/610ed44d42af524518f29b2a/61472bd3b48ecccd04f479f2_farfetch%20logo-p-1080.png"
@@ -70,29 +67,30 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
           </>
         ) : (
           <>
-            {/* <Link to="/" onClick={onHandleLogOut}> */}
             <StyledLogoutIcon onClick={onHandleLogOut} />
             <Link to="/profile">
               <StyledAuthIcon />
             </Link>
-            <Container onClick={handleOpenCart}>
-              <StyledCartIcon />
-              <CartCounter show={totalQuantity > 0}>
-                {totalQuantity}
-              </CartCounter>
-            </Container>
-            {user?.isAdmin && (
+            {/* Показываем корзину только если пользователь не является администратором */}
+            {!user.isAdmin && (
+              <Container onClick={handleOpenCart}>
+                <StyledCartIcon />
+                <CartCounter show={totalQuantity > 0}>
+                  {totalQuantity}
+                </CartCounter>
+              </Container>
+            )}
+            {user.isAdmin && (
               <button className="open_btn" onClick={() => setShowForm(true)}>
                 Добавление товара
               </button>
             )}
           </>
         )}
-        {/* </div> */}
       </Navbar>
-      {showForm && (
+      {/* {showForm && (
         <ProudctAddForm product={emptyProduct} setShowForm={setShowForm} />
-      )}
+      )} */}
       <Outlet />
     </header>
   );

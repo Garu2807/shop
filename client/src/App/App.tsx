@@ -27,7 +27,7 @@ function App(): JSX.Element {
     <div className="App">
       <NavBar handleOpenCart={handleOpenCart} />
       {user?.isAdmin ? (
-        <ProductTable />
+        <ProductTable  />
       ) : (
         <>
           <Routes>
