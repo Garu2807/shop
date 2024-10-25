@@ -39,17 +39,6 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
     dispatch(logOut());
   };
 
-  const emptyProduct: ProductFormInput = {
-    name: '',
-    img: '',
-    brand: '',
-    category: '',
-    size: '',
-    sex: '',
-    price: 0,
-    quantity: 0,
-  };
-
   return (
     <header>
       <Navbar>
@@ -80,17 +69,9 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
                 </CartCounter>
               </Container>
             )}
-            {user.isAdmin && (
-              <button className="open_btn" onClick={() => setShowForm(true)}>
-                Добавление товара
-              </button>
-            )}
           </>
         )}
       </Navbar>
-      {/* {showForm && (
-        <ProudctAddForm product={emptyProduct} setShowForm={setShowForm} />
-      )} */}
       <Outlet />
     </header>
   );
