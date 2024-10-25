@@ -29,19 +29,28 @@ router.post('/registration', async (req, res) => {
 router.post('/authorization', async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Проверка наличия email и password
     if (!email || !password) {
       return res.status(400).json({ message: 'Заполните все поля' });
     }
+
+    // Поиск пользователя по email
     const user = await User.findOne({ where: { email } });
     if (!user) {
+      console.log(true);
       return res
         .status(401)
         .json({ message: 'Такого пользователя не существует' });
     }
+
+    // Сравнение паролей
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Неверный пароль' });
     }
+
+    // Установка сессии и ответ с данными пользователя
     req.session.userId = user.id;
     res.json(user);
   } catch (error) {
