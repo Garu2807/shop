@@ -3,7 +3,15 @@ import { useAppDispatch, useAppSelector } from '../../store';
 import { Product } from '../products/types/Product';
 import { addToCart, updateCartQuantity } from '../cart/cartSlice';
 import { Item } from './Product.styles';
-
+import { removeProducts } from './ProductSlice';
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+  type MRT_Row,
+} from 'material-react-table';
+import { Table } from 'react-bootstrap';
+import ProductTable from './ProductTable';
 export type ProductProps = {
   product: Product;
 };
@@ -11,7 +19,10 @@ export type ProductProps = {
 function ProductItem({ product }: ProductProps): JSX.Element {
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.cart);
-
+  const { user } = useAppSelector((state) => state.auth);
+  const handleRemove = (product: Product): void => {
+    dispatch(removeProducts(product.id));
+  };
   const handleAddToCart = (product: Product): void => {
     // Проверяем, есть ли уже товар в корзине
     const existingProduct = cart.find((item) => item.id === product.id);
@@ -37,9 +48,7 @@ function ProductItem({ product }: ProductProps): JSX.Element {
       <p>{product.name}</p>
       <p>{product.price}</p>
       <button className="addToCart" onClick={() => handleAddToCart(product)}>
-        {cart.some((item) => item.id === product.id)
-          ? 'Добавить еще'
-          : 'Добавить в корзину'}
+        Добавить в корзину
       </button>
     </Item>
   );

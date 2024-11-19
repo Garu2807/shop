@@ -23,6 +23,12 @@ export const authorizationFetch = async (value: UserAuthLog): Promise<User> => {
     },
     body: JSON.stringify(value),
   });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message || 'Ошибка при авторизации');
+  }
+
   return res.json();
 };
 

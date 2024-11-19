@@ -1,26 +1,31 @@
 'use strict';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate({ Order, User, Cart }) {
+      // Связь с заказами через промежуточную таблицу OrderProducts
       this.belongsToMany(Order, {
         through: 'OrderProducts',
         foreignKey: 'products_id',
         as: 'Orders',
       });
+
+      // Связь с пользователями через корзину (Cart)
       this.belongsToMany(User, {
         through: 'Cart',
         foreignKey: 'products_id',
         as: 'Users',
       });
-      this.hasMany(Cart, { foreignKey: 'products_id' });
+
+      // Связь с корзиной, каскадное удаление
+      this.hasMany(Cart, {
+        foreignKey: 'products_id',
+        onDelete: 'CASCADE', // Важный момент: каскадное удаление
+      });
     }
   }
+
   Product.init(
     {
       name: {
@@ -57,5 +62,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Product',
     }
   );
+
   return Product;
 };

@@ -3,10 +3,14 @@ import { useAppDispatch } from '../../store';
 import { removeFromCart, updateCartQuantity } from '../cart/cartSlice';
 import { Product } from '../products/types/Product';
 import {
+  ControlsContainer,
   Item,
+  Price,
+  ProductDetails,
   QuantityControls,
+  RemoveButton,
   Spec,
-  StyledDeleteButton,
+  // StyledDeleteButton,
 } from './Cart.styles';
 
 export type CartProps = {
@@ -25,7 +29,7 @@ function CartItem({ product }: CartProps): JSX.Element {
     dispatch(removeFromCart(product.id));
   };
 
-  const handleQuantityChange = (newQuantity: number) => {
+  const handleQuantityChange = (newQuantity: number): void => {
     if (newQuantity < 1) return;
 
     setQuantity(newQuantity);
@@ -39,22 +43,30 @@ function CartItem({ product }: CartProps): JSX.Element {
         <p>{product.name}</p>
         <p>{product.brand}</p>
       </Spec>
-      <QuantityControls>
-        <button
-          onClick={() => handleQuantityChange(quantity - 1)}
-          disabled={quantity <= 1}
-        >
-          -
-        </button>
-        <input
-          type="number"
-          value={quantity}
-          onChange={(e) => handleQuantityChange(Number(e.target.value))}
-          min="1"
-        />
-        <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
-      </QuantityControls>
-      <StyledDeleteButton onClick={handleRemoveFromCart} title="Удалить" />
+      <ProductDetails>
+        <Spec>{product.name}</Spec>
+        <Price>{`$ ${product.price}`}</Price>
+      </ProductDetails>
+      <RemoveButton onClick={handleRemoveFromCart}>Удалить</RemoveButton>
+      <ControlsContainer>
+        <QuantityControls>
+          <button
+            onClick={() => handleQuantityChange(quantity - 1)}
+            disabled={quantity <= 1}
+          >
+            -
+          </button>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => handleQuantityChange(Number(e.target.value))}
+            min="1"
+          />
+          <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
+        </QuantityControls>
+      </ControlsContainer>
+
+      {/* <StyledDeleteButton onClick={handleRemoveFromCart} title="Удалить" /> */}
     </Item>
   );
 }

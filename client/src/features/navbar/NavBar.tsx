@@ -1,75 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEventHandler } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { logOut } from '../auth/authSlice';
 import { fetchCartQuantity } from '../cart/cartSlice';
-import { LuShoppingCart } from 'react-icons/lu';
-import { FaRegUser } from 'react-icons/fa';
-import { CiLogout } from 'react-icons/ci';
+import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import ProudctAddForm from '../products/ProudctAddForm';
 import Modal from '../modal/Modal';
+import { ProductFormInput } from '../products/types/Product';
+import {
+  Container,
+  StyledLogoutIcon,
+  StyledAuthIcon,
+  Navbar,
+  StyledCartIcon,
+  CartCounter,
+} from './NavBar.styles';
 
-function NavBar(): JSX.Element {
+type NavbarProps = {
+  handleOpenCart: () => void;
+};
+
+function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
   const { user } = useAppSelector((state) => state.auth);
   const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
   const [modalActive, setModalActive] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (user) {
-      // Проверка на наличие пользователя перед отправкой запроса
+    if (user && !user.isAdmin) {
       dispatch(fetchCartQuantity());
     }
   }, [dispatch, user]);
 
-  const onHandleLogOut: React.MouseEventHandler<HTMLAnchorElement> = async (
-    e
-  ) => {
+  const onHandleLogOut: MouseEventHandler<SVGSVGElement> = async (e) => {
     e.preventDefault();
     dispatch(logOut());
   };
 
   return (
     <header>
-      <div className="navbar">
-        <div className="links">
-          <Link to="/">
-            <img
-              src="https://uploads-ssl.webflow.com/610ed44d42af524518f29b2a/61472bd3b48ecccd04f479f2_farfetch%20logo-p-1080.png"
-              alt="Farfetch Logo"
-              width={201}
-            />
-          </Link>
-          <Link to="/cart">
-            <button className="open_btn">
-              <LuShoppingCart />
-              <span className="cart-counter">{totalQuantity}</span>{' '}
-              {/* Отображение количества товаров в корзине */}
-            </button>
-          </Link>
-          {!user ? (
-            <>
-              <button className="open_btn" onClick={() => setModalActive(true)}>
-                <FaRegUser />
-              </button>
-              <Modal active={modalActive} setModalActive={setModalActive} />
-            </>
-          ) : (
-            <>
-              <li>Hello {user.name}</li>
-              <a onClick={onHandleLogOut} className="nav__button" href="/">
-                <button className="open_btn">
-                  <CiLogout />
-                </button>
-              </a>
-              <Link to="/profile">
-                <button className="open_btn">
-                  <FaRegUser />
-                </button>
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
+      <Navbar>
+        <Link to="/">
+          <img
+            src="https://uploads-ssl.webflow.com/610ed44d42af524518f29b2a/61472bd3b48ecccd04f479f2_farfetch%20logo-p-1080.png"
+            alt="Farfetch Logo"
+            width={201}
+          />
+        </Link>
+        {!user ? (
+          <>
+            <StyledAuthIcon onClick={() => setModalActive(true)} />
+            <Modal active={modalActive} setModalActive={setModalActive} />
+          </>
+        ) : (
+          <>
+            <StyledLogoutIcon onClick={onHandleLogOut} />
+            <Link to="/profile">
+              <StyledAuthIcon />
+            </Link>
+            {/* Показываем корзину только если пользователь не является администратором */}
+            {!user.isAdmin && (
+              <Container onClick={handleOpenCart}>
+                <StyledCartIcon />
+                <CartCounter show={totalQuantity > 0}>
+                  {totalQuantity}
+                </CartCounter>
+              </Container>
+            )}
+          </>
+        )}
+      </Navbar>
       <Outlet />
     </header>
   );

@@ -2,13 +2,13 @@ import { Cart } from '../../cart/types/Cart';
 
 export type Product = {
   id: number;
-  name?: string;
-  img?: string;
-  brand?: string;
-  category?: string;
-  sex?: string;
-  size?: string;
-  price?: number;
+  name: string;
+  img: string;
+  brand: string;
+  category: string;
+  sex: string;
+  size: string;
+  price: number;
   quantity: number;
 };
 export type quantityOfProduct = Omit<
@@ -16,3 +16,4 @@ export type quantityOfProduct = Omit<
   'name' | 'img' | 'brand' | 'category' | 'sex' | 'size' | 'price'
 >;
 export type ProductId = Product['id'];
+export type ProductFormInput = Omit<Product, 'id'>;
