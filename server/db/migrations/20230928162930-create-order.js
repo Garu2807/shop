@@ -9,7 +9,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      users_id: {
+      user_id: {
+        // Изменено с users_id на user_id
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -21,9 +22,27 @@ module.exports = {
       date: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.NOW,
       },
-      time: {
-        type: Sequelize.TIME,
+      status: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'Pending',
+      },
+      total_amount: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.0,
+        validate: {
+          min: 0,
+        },
+      },
+      shipping_address: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      payment_method: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {

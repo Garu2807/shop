@@ -57,9 +57,6 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
         ) : (
           <>
             <StyledLogoutIcon onClick={onHandleLogOut} />
-            <Link to="/profile">
-              <StyledAuthIcon />
-            </Link>
             {/* Показываем корзину только если пользователь не является администратором */}
             {!user.isAdmin && (
               <Container onClick={handleOpenCart}>
@@ -67,6 +64,14 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
                 <CartCounter show={totalQuantity > 0}>
                   {totalQuantity}
                 </CartCounter>
+                <Link to="/profile">
+                  <StyledAuthIcon />
+                </Link>
+              </Container>
+            )}
+            {user.isAdmin && (
+              <Container>
+                <Link to="/orders">Заказаы</Link>
               </Container>
             )}
           </>
