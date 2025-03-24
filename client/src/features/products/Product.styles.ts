@@ -11,8 +11,17 @@ export const Item = styled.div`
   width: 200px;
   height: 200px;
   text-align: left;
+
   img {
     width: 100%;
     height: 100%;
+  }
+  p {
+    height: 22px;
+    font-weight: 400;
+    color: #222222;
+  }
+  .brand {
+    font-weight: 700;
   }
 `;

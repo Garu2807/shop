@@ -18,14 +18,14 @@ export type ProductProps = {
 
 function ProductItem({ product }: ProductProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const cart = useAppSelector((state) => state.cart.cart);
-  const { user } = useAppSelector((state) => state.auth);
+  const cart = useAppSelector(state => state.cart.cart);
+  const { user } = useAppSelector(state => state.auth);
   const handleRemove = (product: Product): void => {
     dispatch(removeProducts(product.id));
   };
   const handleAddToCart = (product: Product): void => {
     // Проверяем, есть ли уже товар в корзине
-    const existingProduct = cart.find((item) => item.id === product.id);
+    const existingProduct = cart.find(item => item.id === product.id);
 
     if (existingProduct) {
       // Если товар уже в корзине, увеличиваем его количество
@@ -44,8 +44,8 @@ function ProductItem({ product }: ProductProps): JSX.Element {
   return (
     <Item>
       <img src={product.img} alt={product.name} />
-      <p>{product.brand}</p>
-      <p>{product.name}</p>
+        <p className="brand">{product.brand}</p>
+        <p>{product.name}</p>
       <p>{product.price}</p>
       <button className="addToCart" onClick={() => handleAddToCart(product)}>
         Добавить в корзину
