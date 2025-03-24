@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate({ Product, Cart }) {
+    static associate({ Product, Cart, Order }) {
       // Связь с продуктами через корзину
       this.belongsToMany(Product, {
         through: 'Cart',
@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Cart, {
         foreignKey: 'users_id',
         onDelete: 'CASCADE', // Каскадное удаление
+      });
+      this.hasMany(Order, {
+        foreignKey: 'user_id',
+        as: 'Orders',
+        onDelete: 'CASCADE',
       });
     }
   }

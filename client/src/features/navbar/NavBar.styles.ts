@@ -10,12 +10,20 @@ export const Container = styled.div`
   justify-content: space-between;
   width: 75px;
   align-items: center;
+  padding-left: 12px;
 `;
 export const Navbar = styled.nav`
   display: flex;
+  position: relative;
   align-content: center;
   justify-content: flex-end;
   padding: 0 215px 0 220px;
+  align-items: center;
+  height: 68px;
+  a {
+    position: absolute;
+    left: 44%;
+  }
 `;
 
 export const StyledCartIcon = muiStyled(ShoppingBagOutlinedIcon)(

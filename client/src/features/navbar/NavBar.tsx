@@ -6,6 +6,7 @@ import { fetchCartQuantity } from '../cart/cartSlice';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import ProudctAddForm from '../products/ProudctAddForm';
+import Logo from '../../icons/VARFETCH.svg';
 import Modal from '../modal/Modal';
 import { ProductFormInput } from '../products/types/Product';
 import {
@@ -22,8 +23,8 @@ type NavbarProps = {
 };
 
 function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
-  const { user } = useAppSelector((state) => state.auth);
-  const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
+  const { user } = useAppSelector(state => state.auth);
+  const totalQuantity = useAppSelector(state => state.cart.totalQuantity);
   const [modalActive, setModalActive] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const dispatch = useAppDispatch();
@@ -34,7 +35,7 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
     }
   }, [dispatch, user]);
 
-  const onHandleLogOut: MouseEventHandler<SVGSVGElement> = async (e) => {
+  const onHandleLogOut: MouseEventHandler<SVGSVGElement> = async e => {
     e.preventDefault();
     dispatch(logOut());
   };
@@ -43,11 +44,7 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
     <header>
       <Navbar>
         <Link to="/">
-          <img
-            src="https://uploads-ssl.webflow.com/610ed44d42af524518f29b2a/61472bd3b48ecccd04f479f2_farfetch%20logo-p-1080.png"
-            alt="Farfetch Logo"
-            width={201}
-          />
+          <img src={Logo} alt="Farfetch Logo" width={201} />
         </Link>
         {!user ? (
           <>
@@ -64,9 +61,6 @@ function NavBar({ handleOpenCart }: NavbarProps): JSX.Element {
                 <CartCounter show={totalQuantity > 0}>
                   {totalQuantity}
                 </CartCounter>
-                <Link to="/profile">
-                  <StyledAuthIcon />
-                </Link>
               </Container>
             )}
             {user.isAdmin && (
