@@ -1,0 +1,21 @@
+.container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 75px;
+  align-items: center;
+  padding-left: 12px;
+}
+nav {
+  display: flex;
+  position: relative;
+  align-content: center;
+  justify-content: flex-end;
+  padding: 0 215px 0 220px;
+  align-items: center;
+  height: 68px;
+  a {
+    position: absolute;
+    left: 44%;
+  }
+}

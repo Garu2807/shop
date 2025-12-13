@@ -1,6 +1,6 @@
 // ProductTable.tsx
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { JSX, useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store';

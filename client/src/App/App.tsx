@@ -1,4 +1,4 @@
-import React, { StrictMode, useEffect, useState } from 'react';
+import React, { JSX, StrictMode, useEffect, useState } from 'react';
 // import logo from './logo.svg';
 import ProductList from '../features/products/ProductList';
 import NavBar from '../features/navbar/NavBar';

@@ -1,18 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, JSX } from 'react';
 import { useAppDispatch } from '../../store';
 import { removeFromCart, updateCartQuantity } from '../cart/cartSlice';
 import { Product } from '../products/types/Product';
-import {
-  ControlsContainer,
-  Item,
-  Price,
-  ProductDetails,
-  QuantityControls,
-  RemoveButton,
-  Spec,
-  // StyledDeleteButton,
-} from './Cart.styles';
-
+import styles from './Cart.module.scss';
 export type CartProps = {
   product: Product;
 };
@@ -37,19 +27,21 @@ function CartItem({ product }: CartProps): JSX.Element {
   };
 
   return (
-    <Item>
+    <div className={styles.item}>
       <img src={product.img} alt={product.name} />
-      <Spec>
+      <p className={styles.spec}>
         <p>{product.name}</p>
         <p>{product.brand}</p>
-      </Spec>
-      <ProductDetails>
-        <Spec>{product.name}</Spec>
-        <Price>{`$ ${product.price}`}</Price>
-      </ProductDetails>
-      <RemoveButton onClick={handleRemoveFromCart}>Удалить</RemoveButton>
-      <ControlsContainer>
-        <QuantityControls>
+      </p>
+      <div className={styles.productDetails}>
+        <p className={styles.spec}>{product.name}</p>
+        <p className={styles.price}>{`$ ${product.price}`}</p>
+      </div>
+      <button className={styles.removeButton} onClick={handleRemoveFromCart}>
+        Удалить
+      </button>
+      <div className={styles.controlsContainer}>
+        <div className={styles.quantityControls}>
           <button
             onClick={() => handleQuantityChange(quantity - 1)}
             disabled={quantity <= 1}
@@ -63,11 +55,11 @@ function CartItem({ product }: CartProps): JSX.Element {
             min="1"
           />
           <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
-        </QuantityControls>
-      </ControlsContainer>
+        </div>
+      </div>
 
       {/* <StyledDeleteButton onClick={handleRemoveFromCart} title="Удалить" /> */}
-    </Item>
+    </div>
   );
 }
 

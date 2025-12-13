@@ -1,6 +1,6 @@
 // CartList.tsx
 
-import React, { useEffect } from 'react';
+import React, { JSX, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store';
 import { getCart } from './cartSlice';

@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { JSX, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store';
 import ProductItem from './ProductItem';
-import { Container } from './Product.styles';
-import { loadProducts } from './ProductSlice';
+import styles from './Prooduct.module.scss';
 
 function ProductList(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -12,7 +11,7 @@ function ProductList(): JSX.Element {
   //   dispatch(loadProducts());
   // }, []);
   return (
-    <Container>
+    <div className={styles.container}>
       {products && products.length > 0 ? (
         products.map((product) => (
           <ProductItem product={product} key={product.id} />
@@ -20,7 +19,7 @@ function ProductList(): JSX.Element {
       ) : (
         <p>No products available</p>
       )}
-    </Container>
+    </div>
   );
 }
 

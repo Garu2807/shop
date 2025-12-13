@@ -4,27 +4,6 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-export const Container = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 75px;
-  align-items: center;
-  padding-left: 12px;
-`;
-export const Navbar = styled.nav`
-  display: flex;
-  position: relative;
-  align-content: center;
-  justify-content: flex-end;
-  padding: 0 215px 0 220px;
-  align-items: center;
-  height: 68px;
-  a {
-    position: absolute;
-    left: 44%;
-  }
-`;
 
 export const StyledCartIcon = muiStyled(ShoppingBagOutlinedIcon)(
   ({ theme }) => ({

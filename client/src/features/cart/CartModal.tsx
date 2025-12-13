@@ -1,6 +1,7 @@
 import { Modal, Box, Typography, Button } from '@mui/material';
 import CartList from '../cart/CartList';
 import { modalStyle } from '../cart/Cart.styles';
+import { JSX } from 'react';
 
 type CartModalProps = {
   open: boolean;
